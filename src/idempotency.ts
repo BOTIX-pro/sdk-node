@@ -6,6 +6,9 @@ const MUTATING_METHODS = new Set(['POST', 'PUT', 'PATCH', 'DELETE']);
 /** Идемпотентные endpoints публичного API V1 BOTIX. */
 const IDEMPOTENT_PATHS: Array<RegExp> = [
     /\/public\/v1\/messages\b/,
+    /\/public\/v1\/messages\/bulk-send\b/,
+    /\/public\/v1\/contacts\/bulk-create\b/,
+    /\/public\/v1\/contacts\/bulk-update\b/,
     /\/public\/v1\/scenarios\/\d+\/run\b/,
 ];
 

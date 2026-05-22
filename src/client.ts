@@ -64,7 +64,7 @@ export class BotixClient {
             timeout: options.timeout ?? 30_000,
         });
 
-        const userAgent = options.userAgent ?? 'BOTIX-SDK-Node/1.0.0';
+        const userAgent = options.userAgent ?? 'BOTIX-SDK-Node/1.1.0';
         this.axios.interceptors.request.use((config) => {
             const headers = config.headers as { set?: (n: string, v: string) => void } & Record<string, unknown>;
             if (headers && typeof headers.set === 'function') {

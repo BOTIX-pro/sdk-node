@@ -15,4 +15,4 @@ export { Configuration } from './generated/configuration';
 export type { ConfigurationParameters } from './generated/configuration';
 
 /** Текущая версия SDK. Совпадает с `package.json.version`. */
-export const version = '1.0.0';
+export const version = '1.1.0';

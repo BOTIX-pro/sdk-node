@@ -52,6 +52,6 @@ describe('BotixClient', () => {
     });
 
     it('exports a version string matching package.json', () => {
-        expect(version).toBe('1.0.0');
+        expect(version).toBe('1.1.0');
     });
 });

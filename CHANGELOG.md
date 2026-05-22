@@ -4,6 +4,19 @@
 Формат соответствует [Keep a Changelog](https://keepachangelog.com/ru/1.1.0/),
 версионирование — [Semantic Versioning](https://semver.org/lang/ru/).
 
+## [1.1.0] — 2026-05-22
+
+### Added
+- 3 новых bulk endpoint: `contacts.bulkCreate`, `contacts.bulkUpdate`, `messages.bulkSend` (до 100 операций за запрос, частичный успех).
+- Параметр `cursor` в 12 list-методах (cursor-based пагинация параллельно с существующим `page`).
+- Поле `meta.next_cursor` в response list-методов.
+- Описание заголовков `X-RateLimit-Limit/Remaining/Reset` (во всех ответах) и `Retry-After` (в 429).
+- Автогенерация `Idempotency-Key` распространена на 3 новых bulk endpoint.
+
+### Changed
+- Регенерация на `openapi.yaml` v1.1.0.
+- User-Agent по умолчанию: `BOTIX-SDK-Node/1.0.0` → `BOTIX-SDK-Node/1.1.0`.
+
 ## [1.0.0] — 2026-05-22
 
 ### Added

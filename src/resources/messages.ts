@@ -1,6 +1,7 @@
 import type {
     MessagesApi,
     MessagesApiMessagesListRequest,
+    MessagesBulkSendRequest,
     MessagesSendRequest,
 } from '../generated/api';
 
@@ -19,6 +20,20 @@ export class MessagesResource {
     send(body: MessagesSendRequest, idempotencyKey?: string) {
         return this.api.messagesSend({
             messagesSendRequest: body,
+            idempotencyKey,
+        });
+    }
+
+    /**
+     * Массовая отправка сообщений (до 100 за один запрос). Bulk не обходит
+     * per-bot rate-limit: если за минуту лимит превышен, оставшиеся сообщения
+     * вернутся с `RATE_LIMIT_EXCEEDED` в `results[i].error`. Допустим частичный
+     * успех. Заголовок `Idempotency-Key` проставляется автоматически, если не
+     * передан явно.
+     */
+    bulkSend(body: MessagesBulkSendRequest, idempotencyKey?: string) {
+        return this.api.messagesBulkSend({
+            messagesBulkSendRequest: body,
             idempotencyKey,
         });
     }
