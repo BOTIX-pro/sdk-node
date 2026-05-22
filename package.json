@@ -1,0 +1,62 @@
+{
+  "name": "@botix/sdk",
+  "version": "1.0.0",
+  "description": "Официальный Node.js SDK для публичного API BOTIX",
+  "keywords": [
+    "botix",
+    "chatbot",
+    "api",
+    "sdk",
+    "typescript",
+    "axios"
+  ],
+  "homepage": "https://botix.pro/developers",
+  "bugs": {
+    "url": "https://github.com/BOTIX-pro/sdk-node/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/BOTIX-pro/sdk-node.git"
+  },
+  "license": "MIT",
+  "author": "BOTIX <info@botix.pro>",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "types": "./dist/cjs/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/cjs/index.d.ts",
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js",
+      "default": "./dist/cjs/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "src",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build": "rm -rf dist && tsc -p tsconfig.cjs.json && tsc -p tsconfig.esm.json",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "prepublishOnly": "npm run build && npm test"
+  },
+  "dependencies": {
+    "axios": "^1.6.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.3.0",
+    "vitest": "^1.6.0"
+  },
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  }
+}

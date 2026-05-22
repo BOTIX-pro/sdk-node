@@ -141,3 +141,6 @@ dist
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .vite/
+
+# OpenAPI Generator scratch directory (используется для regeneration)
+/_gen/
