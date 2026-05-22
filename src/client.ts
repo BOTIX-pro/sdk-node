@@ -1,7 +1,15 @@
 import axios, { type AxiosInstance } from 'axios';
 
 import { Configuration } from './generated/configuration';
-import { DefaultApi, WebhooksApi } from './generated/api';
+import {
+    ChannelsApi,
+    ChatsApi,
+    ContactsApi,
+    MessagesApi,
+    ScenariosApi,
+    SystemApi,
+    WebhooksApi,
+} from './generated/api';
 
 import { installIdempotencyInterceptor } from './idempotency';
 import { verifyWebhook } from './webhook';
@@ -72,16 +80,15 @@ export class BotixClient {
             basePath: this.baseUrl,
         });
 
-        const defaultApi = new DefaultApi(configuration, this.baseUrl, this.axios);
-        const webhooksApi = new WebhooksApi(configuration, this.baseUrl, this.axios);
+        const apiArgs = [configuration, this.baseUrl, this.axios] as const;
 
-        this.contacts = new ContactsResource(defaultApi);
-        this.messages = new MessagesResource(defaultApi);
-        this.chats = new ChatsResource(defaultApi);
-        this.scenarios = new ScenariosResource(defaultApi);
-        this.channels = new ChannelsResource(defaultApi);
-        this.webhooks = new WebhooksResource(webhooksApi);
-        this.me = new MeResource(defaultApi);
+        this.contacts = new ContactsResource(new ContactsApi(...apiArgs));
+        this.messages = new MessagesResource(new MessagesApi(...apiArgs));
+        this.chats = new ChatsResource(new ChatsApi(...apiArgs));
+        this.scenarios = new ScenariosResource(new ScenariosApi(...apiArgs));
+        this.channels = new ChannelsResource(new ChannelsApi(...apiArgs));
+        this.webhooks = new WebhooksResource(new WebhooksApi(...apiArgs));
+        this.me = new MeResource(new SystemApi(...apiArgs));
 
         this.removeIdempotency = options.disableIdempotency
             ? () => {}

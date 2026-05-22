@@ -1,14 +1,14 @@
 import type {
-    DefaultApi,
-    DefaultApiPublicV1MessagesGetRequest,
-    PublicV1MessagesPostRequest,
+    MessagesApi,
+    MessagesApiMessagesListRequest,
+    MessagesSendRequest,
 } from '../generated/api';
 
 export class MessagesResource {
-    constructor(private readonly api: DefaultApi) {}
+    constructor(private readonly api: MessagesApi) {}
 
-    list(params: DefaultApiPublicV1MessagesGetRequest = {}) {
-        return this.api.publicV1MessagesGet(params);
+    list(params: MessagesApiMessagesListRequest = {}) {
+        return this.api.messagesList(params);
     }
 
     /**
@@ -16,9 +16,9 @@ export class MessagesResource {
      * для защиты от дублей — клиент проставляет его автоматически, если не передан
      * явно через параметр.
      */
-    send(body: PublicV1MessagesPostRequest, idempotencyKey?: string) {
-        return this.api.publicV1MessagesPost({
-            publicV1MessagesPostRequest: body,
+    send(body: MessagesSendRequest, idempotencyKey?: string) {
+        return this.api.messagesSend({
+            messagesSendRequest: body,
             idempotencyKey,
         });
     }

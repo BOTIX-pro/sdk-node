@@ -1,23 +1,23 @@
 import type {
-    DefaultApi,
-    PublicV1ScenariosIdRunPostRequest,
+    ScenariosApi,
+    ScenariosRunRequest,
 } from '../generated/api';
 
 export class ScenariosResource {
-    constructor(private readonly api: DefaultApi) {}
+    constructor(private readonly api: ScenariosApi) {}
 
     list() {
-        return this.api.publicV1ScenariosGet();
+        return this.api.scenariosList();
     }
 
     /**
      * Запустить сценарий для контакта. Поддерживает `Idempotency-Key` —
      * автоматически проставляется клиентом, если не передан явно.
      */
-    run(id: number, body: PublicV1ScenariosIdRunPostRequest, idempotencyKey?: string) {
-        return this.api.publicV1ScenariosIdRunPost({
+    run(id: number, body: ScenariosRunRequest, idempotencyKey?: string) {
+        return this.api.scenariosRun({
             id,
-            publicV1ScenariosIdRunPostRequest: body,
+            scenariosRunRequest: body,
             idempotencyKey,
         });
     }

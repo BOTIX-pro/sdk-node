@@ -1,33 +1,33 @@
 import type {
-    PublicV1WebhooksIdPutRequest,
-    PublicV1WebhooksPostRequest,
     WebhooksApi,
+    WebhooksCreateRequest,
+    WebhooksUpdateRequest,
 } from '../generated/api';
 
 export class WebhooksResource {
     constructor(private readonly api: WebhooksApi) {}
 
     list() {
-        return this.api.publicV1WebhooksGet();
+        return this.api.webhooksList();
     }
 
-    create(body: PublicV1WebhooksPostRequest) {
-        return this.api.publicV1WebhooksPost({ publicV1WebhooksPostRequest: body });
+    create(body: WebhooksCreateRequest) {
+        return this.api.webhooksCreate({ webhooksCreateRequest: body });
     }
 
-    update(id: number, body: PublicV1WebhooksIdPutRequest) {
-        return this.api.publicV1WebhooksIdPut({
+    update(id: number, body: WebhooksUpdateRequest) {
+        return this.api.webhooksUpdate({
             id,
-            publicV1WebhooksIdPutRequest: body,
+            webhooksUpdateRequest: body,
         });
     }
 
     delete(id: number) {
-        return this.api.publicV1WebhooksIdDelete({ id });
+        return this.api.webhooksDelete({ id });
     }
 
     /** Тестовая отправка — шлёт фиктивное событие `test` на URL подписки. */
     sendTest(id: number) {
-        return this.api.publicV1WebhooksIdTestPost({ id });
+        return this.api.webhooksTest({ id });
     }
 }

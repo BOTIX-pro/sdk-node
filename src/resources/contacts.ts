@@ -1,40 +1,40 @@
 import type {
+    ContactsApi,
+    ContactsApiContactsListRequest,
     ContactWritable,
-    DefaultApi,
-    DefaultApiPublicV1ContactsGetRequest,
 } from '../generated/api';
 
 export class ContactsResource {
-    constructor(private readonly api: DefaultApi) {}
+    constructor(private readonly api: ContactsApi) {}
 
-    list(params: DefaultApiPublicV1ContactsGetRequest = {}) {
-        return this.api.publicV1ContactsGet(params);
+    list(params: ContactsApiContactsListRequest = {}) {
+        return this.api.contactsList(params);
     }
 
     get(id: number) {
-        return this.api.publicV1ContactsIdGet({ id });
+        return this.api.contactsGet({ id });
     }
 
     create(body: ContactWritable) {
-        return this.api.publicV1ContactsPost({ contactWritable: body });
+        return this.api.contactsCreate({ contactWritable: body });
     }
 
     update(id: number, body: ContactWritable) {
-        return this.api.publicV1ContactsIdPut({ id, contactWritable: body });
+        return this.api.contactsUpdate({ id, contactWritable: body });
     }
 
     delete(id: number) {
-        return this.api.publicV1ContactsIdDelete({ id });
+        return this.api.contactsDelete({ id });
     }
 
     addTag(id: number, tag: string) {
-        return this.api.publicV1ContactsIdTagsPost({
+        return this.api.contactsAddTag({
             id,
-            publicV1ContactsIdTagsPostRequest: { tag },
+            contactsAddTagRequest: { tag },
         });
     }
 
     removeTag(id: number, tag: string) {
-        return this.api.publicV1ContactsIdTagsTagDelete({ id, tag });
+        return this.api.contactsRemoveTag({ id, tag });
     }
 }

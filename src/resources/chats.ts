@@ -1,17 +1,17 @@
 import type {
-    DefaultApi,
-    DefaultApiPublicV1ChatsGetRequest,
-    DefaultApiPublicV1ChatsIdMessagesGetRequest,
+    ChatsApi,
+    ChatsApiChatsListRequest,
+    ChatsApiChatsMessagesRequest,
 } from '../generated/api';
 
 export class ChatsResource {
-    constructor(private readonly api: DefaultApi) {}
+    constructor(private readonly api: ChatsApi) {}
 
-    list(params: DefaultApiPublicV1ChatsGetRequest = {}) {
-        return this.api.publicV1ChatsGet(params);
+    list(params: ChatsApiChatsListRequest = {}) {
+        return this.api.chatsList(params);
     }
 
-    messages(params: DefaultApiPublicV1ChatsIdMessagesGetRequest) {
-        return this.api.publicV1ChatsIdMessagesGet(params);
+    messages(params: ChatsApiChatsMessagesRequest) {
+        return this.api.chatsMessages(params);
     }
 }

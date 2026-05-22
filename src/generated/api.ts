@@ -36,6 +36,14 @@ export interface Channel {
     'connected'?: boolean;
     'connected_at'?: string | null;
 }
+export interface ChannelsList200Response {
+    'success'?: boolean;
+    'data'?: Array<Channel>;
+    'meta'?: ChannelsList200ResponseMeta;
+}
+export interface ChannelsList200ResponseMeta {
+    'total'?: number;
+}
 export interface Chat {
     'id'?: number;
     'project_id'?: number;
@@ -58,6 +66,11 @@ export const ChatStatusEnum = {
 
 export type ChatStatusEnum = typeof ChatStatusEnum[keyof typeof ChatStatusEnum];
 
+export interface ChatsList200Response {
+    'success'?: boolean;
+    'data'?: Array<Chat>;
+    'meta'?: SuccessWithMetaMeta;
+}
 export interface Contact {
     'id'?: number;
     'project_id'?: number;
@@ -129,6 +142,25 @@ export const ContactWritableLeadStatusEnum = {
 
 export type ContactWritableLeadStatusEnum = typeof ContactWritableLeadStatusEnum[keyof typeof ContactWritableLeadStatusEnum];
 
+export interface ContactsAddTag200Response {
+    'success'?: boolean;
+    'data'?: ContactsAddTag200ResponseData;
+}
+export interface ContactsAddTag200ResponseData {
+    'tags'?: Array<string>;
+}
+export interface ContactsAddTagRequest {
+    'tag': string;
+}
+export interface ContactsList200Response {
+    'success'?: boolean;
+    'data'?: Array<Contact>;
+    'meta'?: SuccessWithMetaMeta;
+}
+export interface ContactsRemoveTag200Response {
+    'success'?: boolean;
+    'data'?: ContactsAddTag200ResponseData;
+}
 export interface ErrorError {
     'code'?: ErrorErrorCodeEnum;
     'message'?: string;
@@ -216,52 +248,16 @@ export const MessageIsReadEnum = {
 
 export type MessageIsReadEnum = typeof MessageIsReadEnum[keyof typeof MessageIsReadEnum];
 
-export interface ModelError {
-    'success'?: boolean;
-    'error'?: ErrorError;
-}
-export interface PublicV1ChannelsGet200Response {
-    'success'?: boolean;
-    'data'?: Array<Channel>;
-    'meta'?: PublicV1ChannelsGet200ResponseMeta;
-}
-export interface PublicV1ChannelsGet200ResponseMeta {
-    'total'?: number;
-}
-export interface PublicV1ChatsGet200Response {
-    'success'?: boolean;
-    'data'?: Array<Chat>;
-    'meta'?: SuccessWithMetaMeta;
-}
-export interface PublicV1ContactsGet200Response {
-    'success'?: boolean;
-    'data'?: Array<Contact>;
-    'meta'?: SuccessWithMetaMeta;
-}
-export interface PublicV1ContactsIdTagsPost200Response {
-    'success'?: boolean;
-    'data'?: PublicV1ContactsIdTagsPost200ResponseData;
-}
-export interface PublicV1ContactsIdTagsPost200ResponseData {
-    'tags'?: Array<string>;
-}
-export interface PublicV1ContactsIdTagsPostRequest {
-    'tag': string;
-}
-export interface PublicV1ContactsIdTagsTagDelete200Response {
-    'success'?: boolean;
-    'data'?: PublicV1ContactsIdTagsPost200ResponseData;
-}
-export interface PublicV1MessagesGet200Response {
+export interface MessagesList200Response {
     'success'?: boolean;
     'data'?: Array<Message>;
     'meta'?: SuccessWithMetaMeta;
 }
-export interface PublicV1MessagesPost200Response {
+export interface MessagesSend200Response {
     'success'?: boolean;
-    'data'?: PublicV1MessagesPost200ResponseData;
+    'data'?: MessagesSend200ResponseData;
 }
-export interface PublicV1MessagesPost200ResponseData {
+export interface MessagesSend200ResponseData {
     'id'?: number;
     'message_id'?: number;
     'conversation_id'?: number;
@@ -269,94 +265,23 @@ export interface PublicV1MessagesPost200ResponseData {
     'channel'?: string;
     'status'?: string;
 }
-export interface PublicV1MessagesPostRequest {
+export interface MessagesSendRequest {
     'contact_id': number;
     /**
      * telegram | widget | vk. Опционально — иначе берётся last_channel контакта.
      */
     'channel'?: string;
     'content': string;
-    'attachments'?: Array<PublicV1MessagesPostRequestAttachmentsInner>;
+    'attachments'?: Array<MessagesSendRequestAttachmentsInner>;
 }
-export interface PublicV1MessagesPostRequestAttachmentsInner {
+export interface MessagesSendRequestAttachmentsInner {
     'type'?: string;
     'url'?: string;
     'name'?: string;
 }
-export interface PublicV1ScenariosGet200Response {
+export interface ModelError {
     'success'?: boolean;
-    'data'?: Array<Scenario>;
-    'meta'?: SuccessWithMetaMeta;
-}
-export interface PublicV1ScenariosIdRunPost200Response {
-    'success'?: boolean;
-    'data'?: PublicV1ScenariosIdRunPost200ResponseData;
-}
-export interface PublicV1ScenariosIdRunPost200ResponseData {
-    'conversation_id'?: number;
-    'scenario_id'?: number;
-    'channel'?: string;
-    'status'?: string;
-    /**
-     * Первый рендер сценария (widget-канал — заполнено; tg/vk — пусто).
-     */
-    'first_block'?: object | null;
-    'first_blocks'?: Array<object>;
-}
-export interface PublicV1ScenariosIdRunPostRequest {
-    'contact_id': number;
-    /**
-     * telegram | widget | vk. Опционально — иначе берётся last_channel контакта.
-     */
-    'channel'?: string;
-    'variables'?: { [key: string]: any; };
-    /**
-     * Принудительно прервать активный сценарий контакта.
-     */
-    'force'?: boolean;
-}
-export interface PublicV1WebhooksGet200Response {
-    'success'?: boolean;
-    'data'?: Array<Webhook>;
-}
-export interface PublicV1WebhooksIdPutRequest {
-    'url'?: string;
-    'events'?: Array<WebhookEvent>;
-    'status'?: PublicV1WebhooksIdPutRequestStatusEnum;
-}
-
-export const PublicV1WebhooksIdPutRequestStatusEnum = {
-    Active: 'active',
-    Paused: 'paused',
-} as const;
-
-export type PublicV1WebhooksIdPutRequestStatusEnum = typeof PublicV1WebhooksIdPutRequestStatusEnum[keyof typeof PublicV1WebhooksIdPutRequestStatusEnum];
-
-export interface PublicV1WebhooksIdTestPost200Response {
-    'success'?: boolean;
-    'data'?: PublicV1WebhooksIdTestPost200ResponseData;
-}
-export interface PublicV1WebhooksIdTestPost200ResponseData {
-    'delivered'?: boolean;
-    'response_code'?: number | null;
-    'response_ms'?: number | null;
-    'error'?: string | null;
-    'request_id'?: string;
-}
-export interface PublicV1WebhooksPost201Response {
-    'success'?: boolean;
-    'data'?: PublicV1WebhooksPost201ResponseData;
-}
-export interface PublicV1WebhooksPost201ResponseData {
-    'webhook'?: Webhook;
-    /**
-     * Секрет для HMAC. Показывается один раз!
-     */
-    'secret'?: string;
-}
-export interface PublicV1WebhooksPostRequest {
-    'url': string;
-    'events': Array<WebhookEvent>;
+    'error'?: ErrorError;
 }
 export interface Scenario {
     'id'?: number;
@@ -370,6 +295,38 @@ export interface Scenario {
     'published_at'?: string | null;
     'created_at'?: string;
     'updated_at'?: string | null;
+}
+export interface ScenariosList200Response {
+    'success'?: boolean;
+    'data'?: Array<Scenario>;
+    'meta'?: SuccessWithMetaMeta;
+}
+export interface ScenariosRun200Response {
+    'success'?: boolean;
+    'data'?: ScenariosRun200ResponseData;
+}
+export interface ScenariosRun200ResponseData {
+    'conversation_id'?: number;
+    'scenario_id'?: number;
+    'channel'?: string;
+    'status'?: string;
+    /**
+     * Первый рендер сценария (widget-канал — заполнено; tg/vk — пусто).
+     */
+    'first_block'?: object | null;
+    'first_blocks'?: Array<object>;
+}
+export interface ScenariosRunRequest {
+    'contact_id': number;
+    /**
+     * telegram | widget | vk. Опционально — иначе берётся last_channel контакта.
+     */
+    'channel'?: string;
+    'variables'?: { [key: string]: any; };
+    /**
+     * Принудительно прервать активный сценарий контакта.
+     */
+    'force'?: boolean;
 }
 export interface SuccessContact {
     'success'?: boolean;
@@ -424,11 +381,54 @@ export const WebhookEvent = {
 export type WebhookEvent = typeof WebhookEvent[keyof typeof WebhookEvent];
 
 
+export interface WebhooksCreate201Response {
+    'success'?: boolean;
+    'data'?: WebhooksCreate201ResponseData;
+}
+export interface WebhooksCreate201ResponseData {
+    'webhook'?: Webhook;
+    /**
+     * Секрет для HMAC. Показывается один раз!
+     */
+    'secret'?: string;
+}
+export interface WebhooksCreateRequest {
+    'url': string;
+    'events': Array<WebhookEvent>;
+}
+export interface WebhooksList200Response {
+    'success'?: boolean;
+    'data'?: Array<Webhook>;
+}
+export interface WebhooksTest200Response {
+    'success'?: boolean;
+    'data'?: WebhooksTest200ResponseData;
+}
+export interface WebhooksTest200ResponseData {
+    'delivered'?: boolean;
+    'response_code'?: number | null;
+    'response_ms'?: number | null;
+    'error'?: string | null;
+    'request_id'?: string;
+}
+export interface WebhooksUpdateRequest {
+    'url'?: string;
+    'events'?: Array<WebhookEvent>;
+    'status'?: WebhooksUpdateRequestStatusEnum;
+}
+
+export const WebhooksUpdateRequestStatusEnum = {
+    Active: 'active',
+    Paused: 'paused',
+} as const;
+
+export type WebhooksUpdateRequestStatusEnum = typeof WebhooksUpdateRequestStatusEnum[keyof typeof WebhooksUpdateRequestStatusEnum];
+
 
 /**
- * DefaultApi - axios parameter creator
+ * ChannelsApi - axios parameter creator
  */
-export const DefaultApiAxiosParamCreator = function (configuration?: Configuration) {
+export const ChannelsApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
          * 
@@ -436,7 +436,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        publicV1ChannelsGet: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        channelsList: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/public/v1/channels`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -464,18 +464,96 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
                 options: localVarRequestOptions,
             };
         },
+    }
+};
+
+/**
+ * ChannelsApi - functional programming interface
+ */
+export const ChannelsApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = ChannelsApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * 
+         * @summary Каналы проекта
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async channelsList(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ChannelsList200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.channelsList(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ChannelsApi.channelsList']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+    }
+};
+
+/**
+ * ChannelsApi - factory interface
+ */
+export const ChannelsApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = ChannelsApiFp(configuration)
+    return {
+        /**
+         * 
+         * @summary Каналы проекта
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        channelsList(options?: RawAxiosRequestConfig): AxiosPromise<ChannelsList200Response> {
+            return localVarFp.channelsList(options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * ChannelsApi - interface
+ */
+export interface ChannelsApiInterface {
+    /**
+     * 
+     * @summary Каналы проекта
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    channelsList(options?: RawAxiosRequestConfig): AxiosPromise<ChannelsList200Response>;
+
+}
+
+/**
+ * ChannelsApi - object-oriented interface
+ */
+export class ChannelsApi extends BaseAPI implements ChannelsApiInterface {
+    /**
+     * 
+     * @summary Каналы проекта
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public channelsList(options?: RawAxiosRequestConfig) {
+        return ChannelsApiFp(this.configuration).channelsList(options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
+
+/**
+ * ChatsApi - axios parameter creator
+ */
+export const ChatsApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
         /**
          * 
          * @summary Список чатов
          * @param {number} [page] 
          * @param {number} [perPage] 
-         * @param {PublicV1ChatsGetStatusEnum} [status] 
+         * @param {ChatsListStatusEnum} [status] 
          * @param {string} [channel] 
          * @param {number} [contactId] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        publicV1ChatsGet: async (page?: number, perPage?: number, status?: PublicV1ChatsGetStatusEnum, channel?: string, contactId?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        chatsList: async (page?: number, perPage?: number, status?: ChatsListStatusEnum, channel?: string, contactId?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/public/v1/chats`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -532,9 +610,9 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        publicV1ChatsIdMessagesGet: async (id: number, page?: number, perPage?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        chatsMessages: async (id: number, page?: number, perPage?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
-            assertParamExists('publicV1ChatsIdMessagesGet', 'id', id)
+            assertParamExists('chatsMessages', 'id', id)
             const localVarPath = `/public/v1/chats/{id}/messages`
                 .replace('{id}', encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -571,19 +649,341 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
                 options: localVarRequestOptions,
             };
         },
+    }
+};
+
+/**
+ * ChatsApi - functional programming interface
+ */
+export const ChatsApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = ChatsApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * 
+         * @summary Список чатов
+         * @param {number} [page] 
+         * @param {number} [perPage] 
+         * @param {ChatsListStatusEnum} [status] 
+         * @param {string} [channel] 
+         * @param {number} [contactId] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async chatsList(page?: number, perPage?: number, status?: ChatsListStatusEnum, channel?: string, contactId?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ChatsList200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.chatsList(page, perPage, status, channel, contactId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ChatsApi.chatsList']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary Сообщения внутри чата
+         * @param {number} id 
+         * @param {number} [page] 
+         * @param {number} [perPage] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async chatsMessages(id: number, page?: number, perPage?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<MessagesList200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.chatsMessages(id, page, perPage, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ChatsApi.chatsMessages']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+    }
+};
+
+/**
+ * ChatsApi - factory interface
+ */
+export const ChatsApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = ChatsApiFp(configuration)
+    return {
+        /**
+         * 
+         * @summary Список чатов
+         * @param {ChatsApiChatsListRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        chatsList(requestParameters: ChatsApiChatsListRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<ChatsList200Response> {
+            return localVarFp.chatsList(requestParameters.page, requestParameters.perPage, requestParameters.status, requestParameters.channel, requestParameters.contactId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Сообщения внутри чата
+         * @param {ChatsApiChatsMessagesRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        chatsMessages(requestParameters: ChatsApiChatsMessagesRequest, options?: RawAxiosRequestConfig): AxiosPromise<MessagesList200Response> {
+            return localVarFp.chatsMessages(requestParameters.id, requestParameters.page, requestParameters.perPage, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * ChatsApi - interface
+ */
+export interface ChatsApiInterface {
+    /**
+     * 
+     * @summary Список чатов
+     * @param {ChatsApiChatsListRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    chatsList(requestParameters?: ChatsApiChatsListRequest, options?: RawAxiosRequestConfig): AxiosPromise<ChatsList200Response>;
+
+    /**
+     * 
+     * @summary Сообщения внутри чата
+     * @param {ChatsApiChatsMessagesRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    chatsMessages(requestParameters: ChatsApiChatsMessagesRequest, options?: RawAxiosRequestConfig): AxiosPromise<MessagesList200Response>;
+
+}
+
+/**
+ * Request parameters for chatsList operation in ChatsApi.
+ */
+export interface ChatsApiChatsListRequest {
+    readonly page?: number
+
+    readonly perPage?: number
+
+    readonly status?: ChatsListStatusEnum
+
+    readonly channel?: string
+
+    readonly contactId?: number
+}
+
+/**
+ * Request parameters for chatsMessages operation in ChatsApi.
+ */
+export interface ChatsApiChatsMessagesRequest {
+    readonly id: number
+
+    readonly page?: number
+
+    readonly perPage?: number
+}
+
+/**
+ * ChatsApi - object-oriented interface
+ */
+export class ChatsApi extends BaseAPI implements ChatsApiInterface {
+    /**
+     * 
+     * @summary Список чатов
+     * @param {ChatsApiChatsListRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public chatsList(requestParameters: ChatsApiChatsListRequest = {}, options?: RawAxiosRequestConfig) {
+        return ChatsApiFp(this.configuration).chatsList(requestParameters.page, requestParameters.perPage, requestParameters.status, requestParameters.channel, requestParameters.contactId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Сообщения внутри чата
+     * @param {ChatsApiChatsMessagesRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public chatsMessages(requestParameters: ChatsApiChatsMessagesRequest, options?: RawAxiosRequestConfig) {
+        return ChatsApiFp(this.configuration).chatsMessages(requestParameters.id, requestParameters.page, requestParameters.perPage, options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+export const ChatsListStatusEnum = {
+    Active: 'active',
+    Paused: 'paused',
+    Completed: 'completed',
+    Operator: 'operator',
+} as const;
+export type ChatsListStatusEnum = typeof ChatsListStatusEnum[keyof typeof ChatsListStatusEnum];
+
+
+/**
+ * ContactsApi - axios parameter creator
+ */
+export const ContactsApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @summary Добавить тег контакту
+         * @param {number} id 
+         * @param {ContactsAddTagRequest} contactsAddTagRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        contactsAddTag: async (id: number, contactsAddTagRequest: ContactsAddTagRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('contactsAddTag', 'id', id)
+            // verify required parameter 'contactsAddTagRequest' is not null or undefined
+            assertParamExists('contactsAddTag', 'contactsAddTagRequest', contactsAddTagRequest)
+            const localVarPath = `/public/v1/contacts/{id}/tags`
+                .replace('{id}', encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(contactsAddTagRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Создать контакт
+         * @param {ContactWritable} contactWritable 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        contactsCreate: async (contactWritable: ContactWritable, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'contactWritable' is not null or undefined
+            assertParamExists('contactsCreate', 'contactWritable', contactWritable)
+            const localVarPath = `/public/v1/contacts`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(contactWritable, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Удалить контакт (soft delete)
+         * @param {number} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        contactsDelete: async (id: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('contactsDelete', 'id', id)
+            const localVarPath = `/public/v1/contacts/{id}`
+                .replace('{id}', encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Карточка контакта
+         * @param {number} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        contactsGet: async (id: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('contactsGet', 'id', id)
+            const localVarPath = `/public/v1/contacts/{id}`
+                .replace('{id}', encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
         /**
          * 
          * @summary Список контактов
          * @param {number} [page] 
          * @param {number} [perPage] 
          * @param {string} [tag] Фильтр по тегу (точное совпадение)
-         * @param {PublicV1ContactsGetChannelEnum} [channel] 
-         * @param {PublicV1ContactsGetLeadStatusEnum} [leadStatus] 
+         * @param {ContactsListChannelEnum} [channel] 
+         * @param {ContactsListLeadStatusEnum} [leadStatus] 
          * @param {string} [since] Фильтр по created_at &gt;&#x3D; since
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        publicV1ContactsGet: async (page?: number, perPage?: number, tag?: string, channel?: PublicV1ContactsGetChannelEnum, leadStatus?: PublicV1ContactsGetLeadStatusEnum, since?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        contactsList: async (page?: number, perPage?: number, tag?: string, channel?: ContactsListChannelEnum, leadStatus?: ContactsListLeadStatusEnum, since?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/public/v1/contacts`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -639,179 +1039,17 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
         },
         /**
          * 
-         * @summary Удалить контакт (soft delete)
-         * @param {number} id 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        publicV1ContactsIdDelete: async (id: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'id' is not null or undefined
-            assertParamExists('publicV1ContactsIdDelete', 'id', id)
-            const localVarPath = `/public/v1/contacts/{id}`
-                .replace('{id}', encodeURIComponent(String(id)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-            localVarHeaderParameter['Accept'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary Карточка контакта
-         * @param {number} id 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        publicV1ContactsIdGet: async (id: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'id' is not null or undefined
-            assertParamExists('publicV1ContactsIdGet', 'id', id)
-            const localVarPath = `/public/v1/contacts/{id}`
-                .replace('{id}', encodeURIComponent(String(id)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-            localVarHeaderParameter['Accept'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary Обновить контакт
-         * @param {number} id 
-         * @param {ContactWritable} contactWritable 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        publicV1ContactsIdPut: async (id: number, contactWritable: ContactWritable, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'id' is not null or undefined
-            assertParamExists('publicV1ContactsIdPut', 'id', id)
-            // verify required parameter 'contactWritable' is not null or undefined
-            assertParamExists('publicV1ContactsIdPut', 'contactWritable', contactWritable)
-            const localVarPath = `/public/v1/contacts/{id}`
-                .replace('{id}', encodeURIComponent(String(id)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-            localVarHeaderParameter['Accept'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(contactWritable, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary Добавить тег контакту
-         * @param {number} id 
-         * @param {PublicV1ContactsIdTagsPostRequest} publicV1ContactsIdTagsPostRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        publicV1ContactsIdTagsPost: async (id: number, publicV1ContactsIdTagsPostRequest: PublicV1ContactsIdTagsPostRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'id' is not null or undefined
-            assertParamExists('publicV1ContactsIdTagsPost', 'id', id)
-            // verify required parameter 'publicV1ContactsIdTagsPostRequest' is not null or undefined
-            assertParamExists('publicV1ContactsIdTagsPost', 'publicV1ContactsIdTagsPostRequest', publicV1ContactsIdTagsPostRequest)
-            const localVarPath = `/public/v1/contacts/{id}/tags`
-                .replace('{id}', encodeURIComponent(String(id)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-            localVarHeaderParameter['Accept'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(publicV1ContactsIdTagsPostRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
          * @summary Снять тег с контакта
          * @param {number} id 
          * @param {string} tag 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        publicV1ContactsIdTagsTagDelete: async (id: number, tag: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        contactsRemoveTag: async (id: number, tag: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
-            assertParamExists('publicV1ContactsIdTagsTagDelete', 'id', id)
+            assertParamExists('contactsRemoveTag', 'id', id)
             // verify required parameter 'tag' is not null or undefined
-            assertParamExists('publicV1ContactsIdTagsTagDelete', 'tag', tag)
+            assertParamExists('contactsRemoveTag', 'tag', tag)
             const localVarPath = `/public/v1/contacts/{id}/tags/{tag}`
                 .replace('{id}', encodeURIComponent(String(id)))
                 .replace('{tag}', encodeURIComponent(String(tag)));
@@ -843,15 +1081,19 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
         },
         /**
          * 
-         * @summary Создать контакт
+         * @summary Обновить контакт
+         * @param {number} id 
          * @param {ContactWritable} contactWritable 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        publicV1ContactsPost: async (contactWritable: ContactWritable, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        contactsUpdate: async (id: number, contactWritable: ContactWritable, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('contactsUpdate', 'id', id)
             // verify required parameter 'contactWritable' is not null or undefined
-            assertParamExists('publicV1ContactsPost', 'contactWritable', contactWritable)
-            const localVarPath = `/public/v1/contacts`;
+            assertParamExists('contactsUpdate', 'contactWritable', contactWritable)
+            const localVarPath = `/public/v1/contacts/{id}`
+                .replace('{id}', encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -859,7 +1101,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -880,40 +1122,442 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
                 options: localVarRequestOptions,
             };
         },
+    }
+};
+
+/**
+ * ContactsApi - functional programming interface
+ */
+export const ContactsApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = ContactsApiAxiosParamCreator(configuration)
+    return {
         /**
-         * Возвращает project_id, scopes, plan_key, остаток rate-limit
-         * @summary Контекст текущего ключа
+         * 
+         * @summary Добавить тег контакту
+         * @param {number} id 
+         * @param {ContactsAddTagRequest} contactsAddTagRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        publicV1MeGet: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/public/v1/me`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-            localVarHeaderParameter['Accept'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
+        async contactsAddTag(id: number, contactsAddTagRequest: ContactsAddTagRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ContactsAddTag200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.contactsAddTag(id, contactsAddTagRequest, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ContactsApi.contactsAddTag']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
+        /**
+         * 
+         * @summary Создать контакт
+         * @param {ContactWritable} contactWritable 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async contactsCreate(contactWritable: ContactWritable, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SuccessContact>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.contactsCreate(contactWritable, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ContactsApi.contactsCreate']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary Удалить контакт (soft delete)
+         * @param {number} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async contactsDelete(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.contactsDelete(id, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ContactsApi.contactsDelete']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary Карточка контакта
+         * @param {number} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async contactsGet(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SuccessContact>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.contactsGet(id, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ContactsApi.contactsGet']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary Список контактов
+         * @param {number} [page] 
+         * @param {number} [perPage] 
+         * @param {string} [tag] Фильтр по тегу (точное совпадение)
+         * @param {ContactsListChannelEnum} [channel] 
+         * @param {ContactsListLeadStatusEnum} [leadStatus] 
+         * @param {string} [since] Фильтр по created_at &gt;&#x3D; since
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async contactsList(page?: number, perPage?: number, tag?: string, channel?: ContactsListChannelEnum, leadStatus?: ContactsListLeadStatusEnum, since?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ContactsList200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.contactsList(page, perPage, tag, channel, leadStatus, since, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ContactsApi.contactsList']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary Снять тег с контакта
+         * @param {number} id 
+         * @param {string} tag 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async contactsRemoveTag(id: number, tag: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ContactsRemoveTag200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.contactsRemoveTag(id, tag, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ContactsApi.contactsRemoveTag']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary Обновить контакт
+         * @param {number} id 
+         * @param {ContactWritable} contactWritable 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async contactsUpdate(id: number, contactWritable: ContactWritable, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SuccessContact>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.contactsUpdate(id, contactWritable, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ContactsApi.contactsUpdate']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+    }
+};
+
+/**
+ * ContactsApi - factory interface
+ */
+export const ContactsApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = ContactsApiFp(configuration)
+    return {
+        /**
+         * 
+         * @summary Добавить тег контакту
+         * @param {ContactsApiContactsAddTagRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        contactsAddTag(requestParameters: ContactsApiContactsAddTagRequest, options?: RawAxiosRequestConfig): AxiosPromise<ContactsAddTag200Response> {
+            return localVarFp.contactsAddTag(requestParameters.id, requestParameters.contactsAddTagRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Создать контакт
+         * @param {ContactsApiContactsCreateRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        contactsCreate(requestParameters: ContactsApiContactsCreateRequest, options?: RawAxiosRequestConfig): AxiosPromise<SuccessContact> {
+            return localVarFp.contactsCreate(requestParameters.contactWritable, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Удалить контакт (soft delete)
+         * @param {ContactsApiContactsDeleteRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        contactsDelete(requestParameters: ContactsApiContactsDeleteRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.contactsDelete(requestParameters.id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Карточка контакта
+         * @param {ContactsApiContactsGetRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        contactsGet(requestParameters: ContactsApiContactsGetRequest, options?: RawAxiosRequestConfig): AxiosPromise<SuccessContact> {
+            return localVarFp.contactsGet(requestParameters.id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Список контактов
+         * @param {ContactsApiContactsListRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        contactsList(requestParameters: ContactsApiContactsListRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<ContactsList200Response> {
+            return localVarFp.contactsList(requestParameters.page, requestParameters.perPage, requestParameters.tag, requestParameters.channel, requestParameters.leadStatus, requestParameters.since, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Снять тег с контакта
+         * @param {ContactsApiContactsRemoveTagRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        contactsRemoveTag(requestParameters: ContactsApiContactsRemoveTagRequest, options?: RawAxiosRequestConfig): AxiosPromise<ContactsRemoveTag200Response> {
+            return localVarFp.contactsRemoveTag(requestParameters.id, requestParameters.tag, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Обновить контакт
+         * @param {ContactsApiContactsUpdateRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        contactsUpdate(requestParameters: ContactsApiContactsUpdateRequest, options?: RawAxiosRequestConfig): AxiosPromise<SuccessContact> {
+            return localVarFp.contactsUpdate(requestParameters.id, requestParameters.contactWritable, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * ContactsApi - interface
+ */
+export interface ContactsApiInterface {
+    /**
+     * 
+     * @summary Добавить тег контакту
+     * @param {ContactsApiContactsAddTagRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    contactsAddTag(requestParameters: ContactsApiContactsAddTagRequest, options?: RawAxiosRequestConfig): AxiosPromise<ContactsAddTag200Response>;
+
+    /**
+     * 
+     * @summary Создать контакт
+     * @param {ContactsApiContactsCreateRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    contactsCreate(requestParameters: ContactsApiContactsCreateRequest, options?: RawAxiosRequestConfig): AxiosPromise<SuccessContact>;
+
+    /**
+     * 
+     * @summary Удалить контакт (soft delete)
+     * @param {ContactsApiContactsDeleteRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    contactsDelete(requestParameters: ContactsApiContactsDeleteRequest, options?: RawAxiosRequestConfig): AxiosPromise<void>;
+
+    /**
+     * 
+     * @summary Карточка контакта
+     * @param {ContactsApiContactsGetRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    contactsGet(requestParameters: ContactsApiContactsGetRequest, options?: RawAxiosRequestConfig): AxiosPromise<SuccessContact>;
+
+    /**
+     * 
+     * @summary Список контактов
+     * @param {ContactsApiContactsListRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    contactsList(requestParameters?: ContactsApiContactsListRequest, options?: RawAxiosRequestConfig): AxiosPromise<ContactsList200Response>;
+
+    /**
+     * 
+     * @summary Снять тег с контакта
+     * @param {ContactsApiContactsRemoveTagRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    contactsRemoveTag(requestParameters: ContactsApiContactsRemoveTagRequest, options?: RawAxiosRequestConfig): AxiosPromise<ContactsRemoveTag200Response>;
+
+    /**
+     * 
+     * @summary Обновить контакт
+     * @param {ContactsApiContactsUpdateRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    contactsUpdate(requestParameters: ContactsApiContactsUpdateRequest, options?: RawAxiosRequestConfig): AxiosPromise<SuccessContact>;
+
+}
+
+/**
+ * Request parameters for contactsAddTag operation in ContactsApi.
+ */
+export interface ContactsApiContactsAddTagRequest {
+    readonly id: number
+
+    readonly contactsAddTagRequest: ContactsAddTagRequest
+}
+
+/**
+ * Request parameters for contactsCreate operation in ContactsApi.
+ */
+export interface ContactsApiContactsCreateRequest {
+    readonly contactWritable: ContactWritable
+}
+
+/**
+ * Request parameters for contactsDelete operation in ContactsApi.
+ */
+export interface ContactsApiContactsDeleteRequest {
+    readonly id: number
+}
+
+/**
+ * Request parameters for contactsGet operation in ContactsApi.
+ */
+export interface ContactsApiContactsGetRequest {
+    readonly id: number
+}
+
+/**
+ * Request parameters for contactsList operation in ContactsApi.
+ */
+export interface ContactsApiContactsListRequest {
+    readonly page?: number
+
+    readonly perPage?: number
+
+    /**
+     * Фильтр по тегу (точное совпадение)
+     */
+    readonly tag?: string
+
+    readonly channel?: ContactsListChannelEnum
+
+    readonly leadStatus?: ContactsListLeadStatusEnum
+
+    /**
+     * Фильтр по created_at &gt;&#x3D; since
+     */
+    readonly since?: string
+}
+
+/**
+ * Request parameters for contactsRemoveTag operation in ContactsApi.
+ */
+export interface ContactsApiContactsRemoveTagRequest {
+    readonly id: number
+
+    readonly tag: string
+}
+
+/**
+ * Request parameters for contactsUpdate operation in ContactsApi.
+ */
+export interface ContactsApiContactsUpdateRequest {
+    readonly id: number
+
+    readonly contactWritable: ContactWritable
+}
+
+/**
+ * ContactsApi - object-oriented interface
+ */
+export class ContactsApi extends BaseAPI implements ContactsApiInterface {
+    /**
+     * 
+     * @summary Добавить тег контакту
+     * @param {ContactsApiContactsAddTagRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public contactsAddTag(requestParameters: ContactsApiContactsAddTagRequest, options?: RawAxiosRequestConfig) {
+        return ContactsApiFp(this.configuration).contactsAddTag(requestParameters.id, requestParameters.contactsAddTagRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Создать контакт
+     * @param {ContactsApiContactsCreateRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public contactsCreate(requestParameters: ContactsApiContactsCreateRequest, options?: RawAxiosRequestConfig) {
+        return ContactsApiFp(this.configuration).contactsCreate(requestParameters.contactWritable, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Удалить контакт (soft delete)
+     * @param {ContactsApiContactsDeleteRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public contactsDelete(requestParameters: ContactsApiContactsDeleteRequest, options?: RawAxiosRequestConfig) {
+        return ContactsApiFp(this.configuration).contactsDelete(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Карточка контакта
+     * @param {ContactsApiContactsGetRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public contactsGet(requestParameters: ContactsApiContactsGetRequest, options?: RawAxiosRequestConfig) {
+        return ContactsApiFp(this.configuration).contactsGet(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Список контактов
+     * @param {ContactsApiContactsListRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public contactsList(requestParameters: ContactsApiContactsListRequest = {}, options?: RawAxiosRequestConfig) {
+        return ContactsApiFp(this.configuration).contactsList(requestParameters.page, requestParameters.perPage, requestParameters.tag, requestParameters.channel, requestParameters.leadStatus, requestParameters.since, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Снять тег с контакта
+     * @param {ContactsApiContactsRemoveTagRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public contactsRemoveTag(requestParameters: ContactsApiContactsRemoveTagRequest, options?: RawAxiosRequestConfig) {
+        return ContactsApiFp(this.configuration).contactsRemoveTag(requestParameters.id, requestParameters.tag, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Обновить контакт
+     * @param {ContactsApiContactsUpdateRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public contactsUpdate(requestParameters: ContactsApiContactsUpdateRequest, options?: RawAxiosRequestConfig) {
+        return ContactsApiFp(this.configuration).contactsUpdate(requestParameters.id, requestParameters.contactWritable, options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+export const ContactsListChannelEnum = {
+    Telegram: 'telegram',
+    Whatsapp: 'whatsapp',
+    Vk: 'vk',
+    Widget: 'widget',
+    Email: 'email',
+    Phone: 'phone',
+} as const;
+export type ContactsListChannelEnum = typeof ContactsListChannelEnum[keyof typeof ContactsListChannelEnum];
+export const ContactsListLeadStatusEnum = {
+    New: 'new',
+    Warm: 'warm',
+    Hot: 'hot',
+    Client: 'client',
+    Lost: 'lost',
+} as const;
+export type ContactsListLeadStatusEnum = typeof ContactsListLeadStatusEnum[keyof typeof ContactsListLeadStatusEnum];
+
+
+/**
+ * MessagesApi - axios parameter creator
+ */
+export const MessagesApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
         /**
          * 
          * @summary История сообщений
@@ -922,12 +1566,12 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * @param {number} [contactId] 
          * @param {number} [chatId] alias для conversation_id
          * @param {string} [channel] 
-         * @param {PublicV1MessagesGetRoleEnum} [role] 
+         * @param {MessagesListRoleEnum} [role] 
          * @param {string} [since] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        publicV1MessagesGet: async (page?: number, perPage?: number, contactId?: number, chatId?: number, channel?: string, role?: PublicV1MessagesGetRoleEnum, since?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        messagesList: async (page?: number, perPage?: number, contactId?: number, chatId?: number, channel?: string, role?: MessagesListRoleEnum, since?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/public/v1/messages`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -988,14 +1632,14 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
         /**
          * Реально отправляет сообщение в канал (Telegram/widget/VK) и фиксирует его в истории. Канал выбирается так: 1. явный `channel` в payload (если передан); 2. `last_channel` контакта; 3. иначе 422 `NO_CHANNEL_AVAILABLE`.  Поддерживается заголовок `Idempotency-Key` (стандарт Stripe): повторный запрос с тем же ключом в течение 24 часов вернёт сохранённый ответ без новой отправки. Ответ будет содержать заголовок `Idempotent-Replayed: 1`. 
          * @summary Отправить сообщение
-         * @param {PublicV1MessagesPostRequest} publicV1MessagesPostRequest 
+         * @param {MessagesSendRequest} messagesSendRequest 
          * @param {string} [idempotencyKey] Уникальный токен запроса для защиты от дублей при сетевых сбоях.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        publicV1MessagesPost: async (publicV1MessagesPostRequest: PublicV1MessagesPostRequest, idempotencyKey?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'publicV1MessagesPostRequest' is not null or undefined
-            assertParamExists('publicV1MessagesPost', 'publicV1MessagesPostRequest', publicV1MessagesPostRequest)
+        messagesSend: async (messagesSendRequest: MessagesSendRequest, idempotencyKey?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'messagesSendRequest' is not null or undefined
+            assertParamExists('messagesSend', 'messagesSendRequest', messagesSendRequest)
             const localVarPath = `/public/v1/messages`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -1021,20 +1665,193 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(publicV1MessagesPostRequest, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(messagesSendRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
                 options: localVarRequestOptions,
             };
         },
+    }
+};
+
+/**
+ * MessagesApi - functional programming interface
+ */
+export const MessagesApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = MessagesApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * 
+         * @summary История сообщений
+         * @param {number} [page] 
+         * @param {number} [perPage] 
+         * @param {number} [contactId] 
+         * @param {number} [chatId] alias для conversation_id
+         * @param {string} [channel] 
+         * @param {MessagesListRoleEnum} [role] 
+         * @param {string} [since] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async messagesList(page?: number, perPage?: number, contactId?: number, chatId?: number, channel?: string, role?: MessagesListRoleEnum, since?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<MessagesList200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.messagesList(page, perPage, contactId, chatId, channel, role, since, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['MessagesApi.messagesList']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Реально отправляет сообщение в канал (Telegram/widget/VK) и фиксирует его в истории. Канал выбирается так: 1. явный `channel` в payload (если передан); 2. `last_channel` контакта; 3. иначе 422 `NO_CHANNEL_AVAILABLE`.  Поддерживается заголовок `Idempotency-Key` (стандарт Stripe): повторный запрос с тем же ключом в течение 24 часов вернёт сохранённый ответ без новой отправки. Ответ будет содержать заголовок `Idempotent-Replayed: 1`. 
+         * @summary Отправить сообщение
+         * @param {MessagesSendRequest} messagesSendRequest 
+         * @param {string} [idempotencyKey] Уникальный токен запроса для защиты от дублей при сетевых сбоях.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async messagesSend(messagesSendRequest: MessagesSendRequest, idempotencyKey?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<MessagesSend200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.messagesSend(messagesSendRequest, idempotencyKey, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['MessagesApi.messagesSend']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+    }
+};
+
+/**
+ * MessagesApi - factory interface
+ */
+export const MessagesApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = MessagesApiFp(configuration)
+    return {
+        /**
+         * 
+         * @summary История сообщений
+         * @param {MessagesApiMessagesListRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        messagesList(requestParameters: MessagesApiMessagesListRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<MessagesList200Response> {
+            return localVarFp.messagesList(requestParameters.page, requestParameters.perPage, requestParameters.contactId, requestParameters.chatId, requestParameters.channel, requestParameters.role, requestParameters.since, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Реально отправляет сообщение в канал (Telegram/widget/VK) и фиксирует его в истории. Канал выбирается так: 1. явный `channel` в payload (если передан); 2. `last_channel` контакта; 3. иначе 422 `NO_CHANNEL_AVAILABLE`.  Поддерживается заголовок `Idempotency-Key` (стандарт Stripe): повторный запрос с тем же ключом в течение 24 часов вернёт сохранённый ответ без новой отправки. Ответ будет содержать заголовок `Idempotent-Replayed: 1`. 
+         * @summary Отправить сообщение
+         * @param {MessagesApiMessagesSendRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        messagesSend(requestParameters: MessagesApiMessagesSendRequest, options?: RawAxiosRequestConfig): AxiosPromise<MessagesSend200Response> {
+            return localVarFp.messagesSend(requestParameters.messagesSendRequest, requestParameters.idempotencyKey, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * MessagesApi - interface
+ */
+export interface MessagesApiInterface {
+    /**
+     * 
+     * @summary История сообщений
+     * @param {MessagesApiMessagesListRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    messagesList(requestParameters?: MessagesApiMessagesListRequest, options?: RawAxiosRequestConfig): AxiosPromise<MessagesList200Response>;
+
+    /**
+     * Реально отправляет сообщение в канал (Telegram/widget/VK) и фиксирует его в истории. Канал выбирается так: 1. явный `channel` в payload (если передан); 2. `last_channel` контакта; 3. иначе 422 `NO_CHANNEL_AVAILABLE`.  Поддерживается заголовок `Idempotency-Key` (стандарт Stripe): повторный запрос с тем же ключом в течение 24 часов вернёт сохранённый ответ без новой отправки. Ответ будет содержать заголовок `Idempotent-Replayed: 1`. 
+     * @summary Отправить сообщение
+     * @param {MessagesApiMessagesSendRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    messagesSend(requestParameters: MessagesApiMessagesSendRequest, options?: RawAxiosRequestConfig): AxiosPromise<MessagesSend200Response>;
+
+}
+
+/**
+ * Request parameters for messagesList operation in MessagesApi.
+ */
+export interface MessagesApiMessagesListRequest {
+    readonly page?: number
+
+    readonly perPage?: number
+
+    readonly contactId?: number
+
+    /**
+     * alias для conversation_id
+     */
+    readonly chatId?: number
+
+    readonly channel?: string
+
+    readonly role?: MessagesListRoleEnum
+
+    readonly since?: string
+}
+
+/**
+ * Request parameters for messagesSend operation in MessagesApi.
+ */
+export interface MessagesApiMessagesSendRequest {
+    readonly messagesSendRequest: MessagesSendRequest
+
+    /**
+     * Уникальный токен запроса для защиты от дублей при сетевых сбоях.
+     */
+    readonly idempotencyKey?: string
+}
+
+/**
+ * MessagesApi - object-oriented interface
+ */
+export class MessagesApi extends BaseAPI implements MessagesApiInterface {
+    /**
+     * 
+     * @summary История сообщений
+     * @param {MessagesApiMessagesListRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public messagesList(requestParameters: MessagesApiMessagesListRequest = {}, options?: RawAxiosRequestConfig) {
+        return MessagesApiFp(this.configuration).messagesList(requestParameters.page, requestParameters.perPage, requestParameters.contactId, requestParameters.chatId, requestParameters.channel, requestParameters.role, requestParameters.since, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Реально отправляет сообщение в канал (Telegram/widget/VK) и фиксирует его в истории. Канал выбирается так: 1. явный `channel` в payload (если передан); 2. `last_channel` контакта; 3. иначе 422 `NO_CHANNEL_AVAILABLE`.  Поддерживается заголовок `Idempotency-Key` (стандарт Stripe): повторный запрос с тем же ключом в течение 24 часов вернёт сохранённый ответ без новой отправки. Ответ будет содержать заголовок `Idempotent-Replayed: 1`. 
+     * @summary Отправить сообщение
+     * @param {MessagesApiMessagesSendRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public messagesSend(requestParameters: MessagesApiMessagesSendRequest, options?: RawAxiosRequestConfig) {
+        return MessagesApiFp(this.configuration).messagesSend(requestParameters.messagesSendRequest, requestParameters.idempotencyKey, options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+export const MessagesListRoleEnum = {
+    User: 'user',
+    Bot: 'bot',
+    Operator: 'operator',
+    System: 'system',
+} as const;
+export type MessagesListRoleEnum = typeof MessagesListRoleEnum[keyof typeof MessagesListRoleEnum];
+
+
+/**
+ * ScenariosApi - axios parameter creator
+ */
+export const ScenariosApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
         /**
          * 
          * @summary Список сценариев проекта
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        publicV1ScenariosGet: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        scenariosList: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/public/v1/scenarios`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -1066,16 +1883,16 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * Запускает сценарий синхронно: создаёт conversation, отправляет первый блок в канал, возвращает 200 OK c результатом. Для widget-канала первый блок возвращается прямо в ответе (`first_block`/`first_blocks`); для остальных каналов он уходит сразу пользователю, в ответе остаётся пустым.  Поддерживает `Idempotency-Key` (24ч). Если контакт сейчас в другом сценарии — вернётся 422 `CONTACT_BUSY`; передайте `force=true`, чтобы прервать предыдущий диалог. 
          * @summary Запустить сценарий для контакта
          * @param {number} id 
-         * @param {PublicV1ScenariosIdRunPostRequest} publicV1ScenariosIdRunPostRequest 
+         * @param {ScenariosRunRequest} scenariosRunRequest 
          * @param {string} [idempotencyKey] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        publicV1ScenariosIdRunPost: async (id: number, publicV1ScenariosIdRunPostRequest: PublicV1ScenariosIdRunPostRequest, idempotencyKey?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        scenariosRun: async (id: number, scenariosRunRequest: ScenariosRunRequest, idempotencyKey?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
-            assertParamExists('publicV1ScenariosIdRunPost', 'id', id)
-            // verify required parameter 'publicV1ScenariosIdRunPostRequest' is not null or undefined
-            assertParamExists('publicV1ScenariosIdRunPost', 'publicV1ScenariosIdRunPostRequest', publicV1ScenariosIdRunPostRequest)
+            assertParamExists('scenariosRun', 'id', id)
+            // verify required parameter 'scenariosRunRequest' is not null or undefined
+            assertParamExists('scenariosRun', 'scenariosRunRequest', scenariosRunRequest)
             const localVarPath = `/public/v1/scenarios/{id}/run`
                 .replace('{id}', encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -1102,7 +1919,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(publicV1ScenariosIdRunPostRequest, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(scenariosRunRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -1113,878 +1930,144 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
 };
 
 /**
- * DefaultApi - functional programming interface
+ * ScenariosApi - functional programming interface
  */
-export const DefaultApiFp = function(configuration?: Configuration) {
-    const localVarAxiosParamCreator = DefaultApiAxiosParamCreator(configuration)
+export const ScenariosApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = ScenariosApiAxiosParamCreator(configuration)
     return {
-        /**
-         * 
-         * @summary Каналы проекта
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async publicV1ChannelsGet(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PublicV1ChannelsGet200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.publicV1ChannelsGet(options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['DefaultApi.publicV1ChannelsGet']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
-         * @summary Список чатов
-         * @param {number} [page] 
-         * @param {number} [perPage] 
-         * @param {PublicV1ChatsGetStatusEnum} [status] 
-         * @param {string} [channel] 
-         * @param {number} [contactId] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async publicV1ChatsGet(page?: number, perPage?: number, status?: PublicV1ChatsGetStatusEnum, channel?: string, contactId?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PublicV1ChatsGet200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.publicV1ChatsGet(page, perPage, status, channel, contactId, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['DefaultApi.publicV1ChatsGet']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
-         * @summary Сообщения внутри чата
-         * @param {number} id 
-         * @param {number} [page] 
-         * @param {number} [perPage] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async publicV1ChatsIdMessagesGet(id: number, page?: number, perPage?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PublicV1MessagesGet200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.publicV1ChatsIdMessagesGet(id, page, perPage, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['DefaultApi.publicV1ChatsIdMessagesGet']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
-         * @summary Список контактов
-         * @param {number} [page] 
-         * @param {number} [perPage] 
-         * @param {string} [tag] Фильтр по тегу (точное совпадение)
-         * @param {PublicV1ContactsGetChannelEnum} [channel] 
-         * @param {PublicV1ContactsGetLeadStatusEnum} [leadStatus] 
-         * @param {string} [since] Фильтр по created_at &gt;&#x3D; since
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async publicV1ContactsGet(page?: number, perPage?: number, tag?: string, channel?: PublicV1ContactsGetChannelEnum, leadStatus?: PublicV1ContactsGetLeadStatusEnum, since?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PublicV1ContactsGet200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.publicV1ContactsGet(page, perPage, tag, channel, leadStatus, since, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['DefaultApi.publicV1ContactsGet']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
-         * @summary Удалить контакт (soft delete)
-         * @param {number} id 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async publicV1ContactsIdDelete(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.publicV1ContactsIdDelete(id, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['DefaultApi.publicV1ContactsIdDelete']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
-         * @summary Карточка контакта
-         * @param {number} id 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async publicV1ContactsIdGet(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SuccessContact>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.publicV1ContactsIdGet(id, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['DefaultApi.publicV1ContactsIdGet']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
-         * @summary Обновить контакт
-         * @param {number} id 
-         * @param {ContactWritable} contactWritable 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async publicV1ContactsIdPut(id: number, contactWritable: ContactWritable, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SuccessContact>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.publicV1ContactsIdPut(id, contactWritable, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['DefaultApi.publicV1ContactsIdPut']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
-         * @summary Добавить тег контакту
-         * @param {number} id 
-         * @param {PublicV1ContactsIdTagsPostRequest} publicV1ContactsIdTagsPostRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async publicV1ContactsIdTagsPost(id: number, publicV1ContactsIdTagsPostRequest: PublicV1ContactsIdTagsPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PublicV1ContactsIdTagsPost200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.publicV1ContactsIdTagsPost(id, publicV1ContactsIdTagsPostRequest, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['DefaultApi.publicV1ContactsIdTagsPost']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
-         * @summary Снять тег с контакта
-         * @param {number} id 
-         * @param {string} tag 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async publicV1ContactsIdTagsTagDelete(id: number, tag: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PublicV1ContactsIdTagsTagDelete200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.publicV1ContactsIdTagsTagDelete(id, tag, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['DefaultApi.publicV1ContactsIdTagsTagDelete']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
-         * @summary Создать контакт
-         * @param {ContactWritable} contactWritable 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async publicV1ContactsPost(contactWritable: ContactWritable, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SuccessContact>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.publicV1ContactsPost(contactWritable, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['DefaultApi.publicV1ContactsPost']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * Возвращает project_id, scopes, plan_key, остаток rate-limit
-         * @summary Контекст текущего ключа
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async publicV1MeGet(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<MeResponse>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.publicV1MeGet(options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['DefaultApi.publicV1MeGet']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
-         * @summary История сообщений
-         * @param {number} [page] 
-         * @param {number} [perPage] 
-         * @param {number} [contactId] 
-         * @param {number} [chatId] alias для conversation_id
-         * @param {string} [channel] 
-         * @param {PublicV1MessagesGetRoleEnum} [role] 
-         * @param {string} [since] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async publicV1MessagesGet(page?: number, perPage?: number, contactId?: number, chatId?: number, channel?: string, role?: PublicV1MessagesGetRoleEnum, since?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PublicV1MessagesGet200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.publicV1MessagesGet(page, perPage, contactId, chatId, channel, role, since, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['DefaultApi.publicV1MessagesGet']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * Реально отправляет сообщение в канал (Telegram/widget/VK) и фиксирует его в истории. Канал выбирается так: 1. явный `channel` в payload (если передан); 2. `last_channel` контакта; 3. иначе 422 `NO_CHANNEL_AVAILABLE`.  Поддерживается заголовок `Idempotency-Key` (стандарт Stripe): повторный запрос с тем же ключом в течение 24 часов вернёт сохранённый ответ без новой отправки. Ответ будет содержать заголовок `Idempotent-Replayed: 1`. 
-         * @summary Отправить сообщение
-         * @param {PublicV1MessagesPostRequest} publicV1MessagesPostRequest 
-         * @param {string} [idempotencyKey] Уникальный токен запроса для защиты от дублей при сетевых сбоях.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async publicV1MessagesPost(publicV1MessagesPostRequest: PublicV1MessagesPostRequest, idempotencyKey?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PublicV1MessagesPost200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.publicV1MessagesPost(publicV1MessagesPostRequest, idempotencyKey, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['DefaultApi.publicV1MessagesPost']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
         /**
          * 
          * @summary Список сценариев проекта
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async publicV1ScenariosGet(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PublicV1ScenariosGet200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.publicV1ScenariosGet(options);
+        async scenariosList(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ScenariosList200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.scenariosList(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['DefaultApi.publicV1ScenariosGet']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['ScenariosApi.scenariosList']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Запускает сценарий синхронно: создаёт conversation, отправляет первый блок в канал, возвращает 200 OK c результатом. Для widget-канала первый блок возвращается прямо в ответе (`first_block`/`first_blocks`); для остальных каналов он уходит сразу пользователю, в ответе остаётся пустым.  Поддерживает `Idempotency-Key` (24ч). Если контакт сейчас в другом сценарии — вернётся 422 `CONTACT_BUSY`; передайте `force=true`, чтобы прервать предыдущий диалог. 
          * @summary Запустить сценарий для контакта
          * @param {number} id 
-         * @param {PublicV1ScenariosIdRunPostRequest} publicV1ScenariosIdRunPostRequest 
+         * @param {ScenariosRunRequest} scenariosRunRequest 
          * @param {string} [idempotencyKey] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async publicV1ScenariosIdRunPost(id: number, publicV1ScenariosIdRunPostRequest: PublicV1ScenariosIdRunPostRequest, idempotencyKey?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PublicV1ScenariosIdRunPost200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.publicV1ScenariosIdRunPost(id, publicV1ScenariosIdRunPostRequest, idempotencyKey, options);
+        async scenariosRun(id: number, scenariosRunRequest: ScenariosRunRequest, idempotencyKey?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ScenariosRun200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.scenariosRun(id, scenariosRunRequest, idempotencyKey, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['DefaultApi.publicV1ScenariosIdRunPost']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['ScenariosApi.scenariosRun']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
 };
 
 /**
- * DefaultApi - factory interface
+ * ScenariosApi - factory interface
  */
-export const DefaultApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
-    const localVarFp = DefaultApiFp(configuration)
+export const ScenariosApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = ScenariosApiFp(configuration)
     return {
-        /**
-         * 
-         * @summary Каналы проекта
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        publicV1ChannelsGet(options?: RawAxiosRequestConfig): AxiosPromise<PublicV1ChannelsGet200Response> {
-            return localVarFp.publicV1ChannelsGet(options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @summary Список чатов
-         * @param {DefaultApiPublicV1ChatsGetRequest} requestParameters Request parameters.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        publicV1ChatsGet(requestParameters: DefaultApiPublicV1ChatsGetRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<PublicV1ChatsGet200Response> {
-            return localVarFp.publicV1ChatsGet(requestParameters.page, requestParameters.perPage, requestParameters.status, requestParameters.channel, requestParameters.contactId, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @summary Сообщения внутри чата
-         * @param {DefaultApiPublicV1ChatsIdMessagesGetRequest} requestParameters Request parameters.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        publicV1ChatsIdMessagesGet(requestParameters: DefaultApiPublicV1ChatsIdMessagesGetRequest, options?: RawAxiosRequestConfig): AxiosPromise<PublicV1MessagesGet200Response> {
-            return localVarFp.publicV1ChatsIdMessagesGet(requestParameters.id, requestParameters.page, requestParameters.perPage, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @summary Список контактов
-         * @param {DefaultApiPublicV1ContactsGetRequest} requestParameters Request parameters.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        publicV1ContactsGet(requestParameters: DefaultApiPublicV1ContactsGetRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<PublicV1ContactsGet200Response> {
-            return localVarFp.publicV1ContactsGet(requestParameters.page, requestParameters.perPage, requestParameters.tag, requestParameters.channel, requestParameters.leadStatus, requestParameters.since, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @summary Удалить контакт (soft delete)
-         * @param {DefaultApiPublicV1ContactsIdDeleteRequest} requestParameters Request parameters.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        publicV1ContactsIdDelete(requestParameters: DefaultApiPublicV1ContactsIdDeleteRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
-            return localVarFp.publicV1ContactsIdDelete(requestParameters.id, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @summary Карточка контакта
-         * @param {DefaultApiPublicV1ContactsIdGetRequest} requestParameters Request parameters.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        publicV1ContactsIdGet(requestParameters: DefaultApiPublicV1ContactsIdGetRequest, options?: RawAxiosRequestConfig): AxiosPromise<SuccessContact> {
-            return localVarFp.publicV1ContactsIdGet(requestParameters.id, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @summary Обновить контакт
-         * @param {DefaultApiPublicV1ContactsIdPutRequest} requestParameters Request parameters.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        publicV1ContactsIdPut(requestParameters: DefaultApiPublicV1ContactsIdPutRequest, options?: RawAxiosRequestConfig): AxiosPromise<SuccessContact> {
-            return localVarFp.publicV1ContactsIdPut(requestParameters.id, requestParameters.contactWritable, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @summary Добавить тег контакту
-         * @param {DefaultApiPublicV1ContactsIdTagsPostRequest} requestParameters Request parameters.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        publicV1ContactsIdTagsPost(requestParameters: DefaultApiPublicV1ContactsIdTagsPostRequest, options?: RawAxiosRequestConfig): AxiosPromise<PublicV1ContactsIdTagsPost200Response> {
-            return localVarFp.publicV1ContactsIdTagsPost(requestParameters.id, requestParameters.publicV1ContactsIdTagsPostRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @summary Снять тег с контакта
-         * @param {DefaultApiPublicV1ContactsIdTagsTagDeleteRequest} requestParameters Request parameters.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        publicV1ContactsIdTagsTagDelete(requestParameters: DefaultApiPublicV1ContactsIdTagsTagDeleteRequest, options?: RawAxiosRequestConfig): AxiosPromise<PublicV1ContactsIdTagsTagDelete200Response> {
-            return localVarFp.publicV1ContactsIdTagsTagDelete(requestParameters.id, requestParameters.tag, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @summary Создать контакт
-         * @param {DefaultApiPublicV1ContactsPostRequest} requestParameters Request parameters.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        publicV1ContactsPost(requestParameters: DefaultApiPublicV1ContactsPostRequest, options?: RawAxiosRequestConfig): AxiosPromise<SuccessContact> {
-            return localVarFp.publicV1ContactsPost(requestParameters.contactWritable, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * Возвращает project_id, scopes, plan_key, остаток rate-limit
-         * @summary Контекст текущего ключа
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        publicV1MeGet(options?: RawAxiosRequestConfig): AxiosPromise<MeResponse> {
-            return localVarFp.publicV1MeGet(options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @summary История сообщений
-         * @param {DefaultApiPublicV1MessagesGetRequest} requestParameters Request parameters.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        publicV1MessagesGet(requestParameters: DefaultApiPublicV1MessagesGetRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<PublicV1MessagesGet200Response> {
-            return localVarFp.publicV1MessagesGet(requestParameters.page, requestParameters.perPage, requestParameters.contactId, requestParameters.chatId, requestParameters.channel, requestParameters.role, requestParameters.since, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * Реально отправляет сообщение в канал (Telegram/widget/VK) и фиксирует его в истории. Канал выбирается так: 1. явный `channel` в payload (если передан); 2. `last_channel` контакта; 3. иначе 422 `NO_CHANNEL_AVAILABLE`.  Поддерживается заголовок `Idempotency-Key` (стандарт Stripe): повторный запрос с тем же ключом в течение 24 часов вернёт сохранённый ответ без новой отправки. Ответ будет содержать заголовок `Idempotent-Replayed: 1`. 
-         * @summary Отправить сообщение
-         * @param {DefaultApiPublicV1MessagesPostRequest} requestParameters Request parameters.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        publicV1MessagesPost(requestParameters: DefaultApiPublicV1MessagesPostRequest, options?: RawAxiosRequestConfig): AxiosPromise<PublicV1MessagesPost200Response> {
-            return localVarFp.publicV1MessagesPost(requestParameters.publicV1MessagesPostRequest, requestParameters.idempotencyKey, options).then((request) => request(axios, basePath));
-        },
         /**
          * 
          * @summary Список сценариев проекта
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        publicV1ScenariosGet(options?: RawAxiosRequestConfig): AxiosPromise<PublicV1ScenariosGet200Response> {
-            return localVarFp.publicV1ScenariosGet(options).then((request) => request(axios, basePath));
+        scenariosList(options?: RawAxiosRequestConfig): AxiosPromise<ScenariosList200Response> {
+            return localVarFp.scenariosList(options).then((request) => request(axios, basePath));
         },
         /**
          * Запускает сценарий синхронно: создаёт conversation, отправляет первый блок в канал, возвращает 200 OK c результатом. Для widget-канала первый блок возвращается прямо в ответе (`first_block`/`first_blocks`); для остальных каналов он уходит сразу пользователю, в ответе остаётся пустым.  Поддерживает `Idempotency-Key` (24ч). Если контакт сейчас в другом сценарии — вернётся 422 `CONTACT_BUSY`; передайте `force=true`, чтобы прервать предыдущий диалог. 
          * @summary Запустить сценарий для контакта
-         * @param {DefaultApiPublicV1ScenariosIdRunPostRequest} requestParameters Request parameters.
+         * @param {ScenariosApiScenariosRunRequest} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        publicV1ScenariosIdRunPost(requestParameters: DefaultApiPublicV1ScenariosIdRunPostRequest, options?: RawAxiosRequestConfig): AxiosPromise<PublicV1ScenariosIdRunPost200Response> {
-            return localVarFp.publicV1ScenariosIdRunPost(requestParameters.id, requestParameters.publicV1ScenariosIdRunPostRequest, requestParameters.idempotencyKey, options).then((request) => request(axios, basePath));
+        scenariosRun(requestParameters: ScenariosApiScenariosRunRequest, options?: RawAxiosRequestConfig): AxiosPromise<ScenariosRun200Response> {
+            return localVarFp.scenariosRun(requestParameters.id, requestParameters.scenariosRunRequest, requestParameters.idempotencyKey, options).then((request) => request(axios, basePath));
         },
     };
 };
 
 /**
- * DefaultApi - interface
+ * ScenariosApi - interface
  */
-export interface DefaultApiInterface {
-    /**
-     * 
-     * @summary Каналы проекта
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    publicV1ChannelsGet(options?: RawAxiosRequestConfig): AxiosPromise<PublicV1ChannelsGet200Response>;
-
-    /**
-     * 
-     * @summary Список чатов
-     * @param {DefaultApiPublicV1ChatsGetRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    publicV1ChatsGet(requestParameters?: DefaultApiPublicV1ChatsGetRequest, options?: RawAxiosRequestConfig): AxiosPromise<PublicV1ChatsGet200Response>;
-
-    /**
-     * 
-     * @summary Сообщения внутри чата
-     * @param {DefaultApiPublicV1ChatsIdMessagesGetRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    publicV1ChatsIdMessagesGet(requestParameters: DefaultApiPublicV1ChatsIdMessagesGetRequest, options?: RawAxiosRequestConfig): AxiosPromise<PublicV1MessagesGet200Response>;
-
-    /**
-     * 
-     * @summary Список контактов
-     * @param {DefaultApiPublicV1ContactsGetRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    publicV1ContactsGet(requestParameters?: DefaultApiPublicV1ContactsGetRequest, options?: RawAxiosRequestConfig): AxiosPromise<PublicV1ContactsGet200Response>;
-
-    /**
-     * 
-     * @summary Удалить контакт (soft delete)
-     * @param {DefaultApiPublicV1ContactsIdDeleteRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    publicV1ContactsIdDelete(requestParameters: DefaultApiPublicV1ContactsIdDeleteRequest, options?: RawAxiosRequestConfig): AxiosPromise<void>;
-
-    /**
-     * 
-     * @summary Карточка контакта
-     * @param {DefaultApiPublicV1ContactsIdGetRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    publicV1ContactsIdGet(requestParameters: DefaultApiPublicV1ContactsIdGetRequest, options?: RawAxiosRequestConfig): AxiosPromise<SuccessContact>;
-
-    /**
-     * 
-     * @summary Обновить контакт
-     * @param {DefaultApiPublicV1ContactsIdPutRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    publicV1ContactsIdPut(requestParameters: DefaultApiPublicV1ContactsIdPutRequest, options?: RawAxiosRequestConfig): AxiosPromise<SuccessContact>;
-
-    /**
-     * 
-     * @summary Добавить тег контакту
-     * @param {DefaultApiPublicV1ContactsIdTagsPostRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    publicV1ContactsIdTagsPost(requestParameters: DefaultApiPublicV1ContactsIdTagsPostRequest, options?: RawAxiosRequestConfig): AxiosPromise<PublicV1ContactsIdTagsPost200Response>;
-
-    /**
-     * 
-     * @summary Снять тег с контакта
-     * @param {DefaultApiPublicV1ContactsIdTagsTagDeleteRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    publicV1ContactsIdTagsTagDelete(requestParameters: DefaultApiPublicV1ContactsIdTagsTagDeleteRequest, options?: RawAxiosRequestConfig): AxiosPromise<PublicV1ContactsIdTagsTagDelete200Response>;
-
-    /**
-     * 
-     * @summary Создать контакт
-     * @param {DefaultApiPublicV1ContactsPostRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    publicV1ContactsPost(requestParameters: DefaultApiPublicV1ContactsPostRequest, options?: RawAxiosRequestConfig): AxiosPromise<SuccessContact>;
-
-    /**
-     * Возвращает project_id, scopes, plan_key, остаток rate-limit
-     * @summary Контекст текущего ключа
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    publicV1MeGet(options?: RawAxiosRequestConfig): AxiosPromise<MeResponse>;
-
-    /**
-     * 
-     * @summary История сообщений
-     * @param {DefaultApiPublicV1MessagesGetRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    publicV1MessagesGet(requestParameters?: DefaultApiPublicV1MessagesGetRequest, options?: RawAxiosRequestConfig): AxiosPromise<PublicV1MessagesGet200Response>;
-
-    /**
-     * Реально отправляет сообщение в канал (Telegram/widget/VK) и фиксирует его в истории. Канал выбирается так: 1. явный `channel` в payload (если передан); 2. `last_channel` контакта; 3. иначе 422 `NO_CHANNEL_AVAILABLE`.  Поддерживается заголовок `Idempotency-Key` (стандарт Stripe): повторный запрос с тем же ключом в течение 24 часов вернёт сохранённый ответ без новой отправки. Ответ будет содержать заголовок `Idempotent-Replayed: 1`. 
-     * @summary Отправить сообщение
-     * @param {DefaultApiPublicV1MessagesPostRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    publicV1MessagesPost(requestParameters: DefaultApiPublicV1MessagesPostRequest, options?: RawAxiosRequestConfig): AxiosPromise<PublicV1MessagesPost200Response>;
-
+export interface ScenariosApiInterface {
     /**
      * 
      * @summary Список сценариев проекта
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    publicV1ScenariosGet(options?: RawAxiosRequestConfig): AxiosPromise<PublicV1ScenariosGet200Response>;
+    scenariosList(options?: RawAxiosRequestConfig): AxiosPromise<ScenariosList200Response>;
 
     /**
      * Запускает сценарий синхронно: создаёт conversation, отправляет первый блок в канал, возвращает 200 OK c результатом. Для widget-канала первый блок возвращается прямо в ответе (`first_block`/`first_blocks`); для остальных каналов он уходит сразу пользователю, в ответе остаётся пустым.  Поддерживает `Idempotency-Key` (24ч). Если контакт сейчас в другом сценарии — вернётся 422 `CONTACT_BUSY`; передайте `force=true`, чтобы прервать предыдущий диалог. 
      * @summary Запустить сценарий для контакта
-     * @param {DefaultApiPublicV1ScenariosIdRunPostRequest} requestParameters Request parameters.
+     * @param {ScenariosApiScenariosRunRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    publicV1ScenariosIdRunPost(requestParameters: DefaultApiPublicV1ScenariosIdRunPostRequest, options?: RawAxiosRequestConfig): AxiosPromise<PublicV1ScenariosIdRunPost200Response>;
+    scenariosRun(requestParameters: ScenariosApiScenariosRunRequest, options?: RawAxiosRequestConfig): AxiosPromise<ScenariosRun200Response>;
 
 }
 
 /**
- * Request parameters for publicV1ChatsGet operation in DefaultApi.
+ * Request parameters for scenariosRun operation in ScenariosApi.
  */
-export interface DefaultApiPublicV1ChatsGetRequest {
-    readonly page?: number
-
-    readonly perPage?: number
-
-    readonly status?: PublicV1ChatsGetStatusEnum
-
-    readonly channel?: string
-
-    readonly contactId?: number
-}
-
-/**
- * Request parameters for publicV1ChatsIdMessagesGet operation in DefaultApi.
- */
-export interface DefaultApiPublicV1ChatsIdMessagesGetRequest {
+export interface ScenariosApiScenariosRunRequest {
     readonly id: number
 
-    readonly page?: number
-
-    readonly perPage?: number
-}
-
-/**
- * Request parameters for publicV1ContactsGet operation in DefaultApi.
- */
-export interface DefaultApiPublicV1ContactsGetRequest {
-    readonly page?: number
-
-    readonly perPage?: number
-
-    /**
-     * Фильтр по тегу (точное совпадение)
-     */
-    readonly tag?: string
-
-    readonly channel?: PublicV1ContactsGetChannelEnum
-
-    readonly leadStatus?: PublicV1ContactsGetLeadStatusEnum
-
-    /**
-     * Фильтр по created_at &gt;&#x3D; since
-     */
-    readonly since?: string
-}
-
-/**
- * Request parameters for publicV1ContactsIdDelete operation in DefaultApi.
- */
-export interface DefaultApiPublicV1ContactsIdDeleteRequest {
-    readonly id: number
-}
-
-/**
- * Request parameters for publicV1ContactsIdGet operation in DefaultApi.
- */
-export interface DefaultApiPublicV1ContactsIdGetRequest {
-    readonly id: number
-}
-
-/**
- * Request parameters for publicV1ContactsIdPut operation in DefaultApi.
- */
-export interface DefaultApiPublicV1ContactsIdPutRequest {
-    readonly id: number
-
-    readonly contactWritable: ContactWritable
-}
-
-/**
- * Request parameters for publicV1ContactsIdTagsPost operation in DefaultApi.
- */
-export interface DefaultApiPublicV1ContactsIdTagsPostRequest {
-    readonly id: number
-
-    readonly publicV1ContactsIdTagsPostRequest: PublicV1ContactsIdTagsPostRequest
-}
-
-/**
- * Request parameters for publicV1ContactsIdTagsTagDelete operation in DefaultApi.
- */
-export interface DefaultApiPublicV1ContactsIdTagsTagDeleteRequest {
-    readonly id: number
-
-    readonly tag: string
-}
-
-/**
- * Request parameters for publicV1ContactsPost operation in DefaultApi.
- */
-export interface DefaultApiPublicV1ContactsPostRequest {
-    readonly contactWritable: ContactWritable
-}
-
-/**
- * Request parameters for publicV1MessagesGet operation in DefaultApi.
- */
-export interface DefaultApiPublicV1MessagesGetRequest {
-    readonly page?: number
-
-    readonly perPage?: number
-
-    readonly contactId?: number
-
-    /**
-     * alias для conversation_id
-     */
-    readonly chatId?: number
-
-    readonly channel?: string
-
-    readonly role?: PublicV1MessagesGetRoleEnum
-
-    readonly since?: string
-}
-
-/**
- * Request parameters for publicV1MessagesPost operation in DefaultApi.
- */
-export interface DefaultApiPublicV1MessagesPostRequest {
-    readonly publicV1MessagesPostRequest: PublicV1MessagesPostRequest
-
-    /**
-     * Уникальный токен запроса для защиты от дублей при сетевых сбоях.
-     */
-    readonly idempotencyKey?: string
-}
-
-/**
- * Request parameters for publicV1ScenariosIdRunPost operation in DefaultApi.
- */
-export interface DefaultApiPublicV1ScenariosIdRunPostRequest {
-    readonly id: number
-
-    readonly publicV1ScenariosIdRunPostRequest: PublicV1ScenariosIdRunPostRequest
+    readonly scenariosRunRequest: ScenariosRunRequest
 
     readonly idempotencyKey?: string
 }
 
 /**
- * DefaultApi - object-oriented interface
+ * ScenariosApi - object-oriented interface
  */
-export class DefaultApi extends BaseAPI implements DefaultApiInterface {
-    /**
-     * 
-     * @summary Каналы проекта
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    public publicV1ChannelsGet(options?: RawAxiosRequestConfig) {
-        return DefaultApiFp(this.configuration).publicV1ChannelsGet(options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @summary Список чатов
-     * @param {DefaultApiPublicV1ChatsGetRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    public publicV1ChatsGet(requestParameters: DefaultApiPublicV1ChatsGetRequest = {}, options?: RawAxiosRequestConfig) {
-        return DefaultApiFp(this.configuration).publicV1ChatsGet(requestParameters.page, requestParameters.perPage, requestParameters.status, requestParameters.channel, requestParameters.contactId, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @summary Сообщения внутри чата
-     * @param {DefaultApiPublicV1ChatsIdMessagesGetRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    public publicV1ChatsIdMessagesGet(requestParameters: DefaultApiPublicV1ChatsIdMessagesGetRequest, options?: RawAxiosRequestConfig) {
-        return DefaultApiFp(this.configuration).publicV1ChatsIdMessagesGet(requestParameters.id, requestParameters.page, requestParameters.perPage, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @summary Список контактов
-     * @param {DefaultApiPublicV1ContactsGetRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    public publicV1ContactsGet(requestParameters: DefaultApiPublicV1ContactsGetRequest = {}, options?: RawAxiosRequestConfig) {
-        return DefaultApiFp(this.configuration).publicV1ContactsGet(requestParameters.page, requestParameters.perPage, requestParameters.tag, requestParameters.channel, requestParameters.leadStatus, requestParameters.since, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @summary Удалить контакт (soft delete)
-     * @param {DefaultApiPublicV1ContactsIdDeleteRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    public publicV1ContactsIdDelete(requestParameters: DefaultApiPublicV1ContactsIdDeleteRequest, options?: RawAxiosRequestConfig) {
-        return DefaultApiFp(this.configuration).publicV1ContactsIdDelete(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @summary Карточка контакта
-     * @param {DefaultApiPublicV1ContactsIdGetRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    public publicV1ContactsIdGet(requestParameters: DefaultApiPublicV1ContactsIdGetRequest, options?: RawAxiosRequestConfig) {
-        return DefaultApiFp(this.configuration).publicV1ContactsIdGet(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @summary Обновить контакт
-     * @param {DefaultApiPublicV1ContactsIdPutRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    public publicV1ContactsIdPut(requestParameters: DefaultApiPublicV1ContactsIdPutRequest, options?: RawAxiosRequestConfig) {
-        return DefaultApiFp(this.configuration).publicV1ContactsIdPut(requestParameters.id, requestParameters.contactWritable, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @summary Добавить тег контакту
-     * @param {DefaultApiPublicV1ContactsIdTagsPostRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    public publicV1ContactsIdTagsPost(requestParameters: DefaultApiPublicV1ContactsIdTagsPostRequest, options?: RawAxiosRequestConfig) {
-        return DefaultApiFp(this.configuration).publicV1ContactsIdTagsPost(requestParameters.id, requestParameters.publicV1ContactsIdTagsPostRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @summary Снять тег с контакта
-     * @param {DefaultApiPublicV1ContactsIdTagsTagDeleteRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    public publicV1ContactsIdTagsTagDelete(requestParameters: DefaultApiPublicV1ContactsIdTagsTagDeleteRequest, options?: RawAxiosRequestConfig) {
-        return DefaultApiFp(this.configuration).publicV1ContactsIdTagsTagDelete(requestParameters.id, requestParameters.tag, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @summary Создать контакт
-     * @param {DefaultApiPublicV1ContactsPostRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    public publicV1ContactsPost(requestParameters: DefaultApiPublicV1ContactsPostRequest, options?: RawAxiosRequestConfig) {
-        return DefaultApiFp(this.configuration).publicV1ContactsPost(requestParameters.contactWritable, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * Возвращает project_id, scopes, plan_key, остаток rate-limit
-     * @summary Контекст текущего ключа
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    public publicV1MeGet(options?: RawAxiosRequestConfig) {
-        return DefaultApiFp(this.configuration).publicV1MeGet(options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @summary История сообщений
-     * @param {DefaultApiPublicV1MessagesGetRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    public publicV1MessagesGet(requestParameters: DefaultApiPublicV1MessagesGetRequest = {}, options?: RawAxiosRequestConfig) {
-        return DefaultApiFp(this.configuration).publicV1MessagesGet(requestParameters.page, requestParameters.perPage, requestParameters.contactId, requestParameters.chatId, requestParameters.channel, requestParameters.role, requestParameters.since, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * Реально отправляет сообщение в канал (Telegram/widget/VK) и фиксирует его в истории. Канал выбирается так: 1. явный `channel` в payload (если передан); 2. `last_channel` контакта; 3. иначе 422 `NO_CHANNEL_AVAILABLE`.  Поддерживается заголовок `Idempotency-Key` (стандарт Stripe): повторный запрос с тем же ключом в течение 24 часов вернёт сохранённый ответ без новой отправки. Ответ будет содержать заголовок `Idempotent-Replayed: 1`. 
-     * @summary Отправить сообщение
-     * @param {DefaultApiPublicV1MessagesPostRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    public publicV1MessagesPost(requestParameters: DefaultApiPublicV1MessagesPostRequest, options?: RawAxiosRequestConfig) {
-        return DefaultApiFp(this.configuration).publicV1MessagesPost(requestParameters.publicV1MessagesPostRequest, requestParameters.idempotencyKey, options).then((request) => request(this.axios, this.basePath));
-    }
-
+export class ScenariosApi extends BaseAPI implements ScenariosApiInterface {
     /**
      * 
      * @summary Список сценариев проекта
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public publicV1ScenariosGet(options?: RawAxiosRequestConfig) {
-        return DefaultApiFp(this.configuration).publicV1ScenariosGet(options).then((request) => request(this.axios, this.basePath));
+    public scenariosList(options?: RawAxiosRequestConfig) {
+        return ScenariosApiFp(this.configuration).scenariosList(options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * Запускает сценарий синхронно: создаёт conversation, отправляет первый блок в канал, возвращает 200 OK c результатом. Для widget-канала первый блок возвращается прямо в ответе (`first_block`/`first_blocks`); для остальных каналов он уходит сразу пользователю, в ответе остаётся пустым.  Поддерживает `Idempotency-Key` (24ч). Если контакт сейчас в другом сценарии — вернётся 422 `CONTACT_BUSY`; передайте `force=true`, чтобы прервать предыдущий диалог. 
      * @summary Запустить сценарий для контакта
-     * @param {DefaultApiPublicV1ScenariosIdRunPostRequest} requestParameters Request parameters.
+     * @param {ScenariosApiScenariosRunRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public publicV1ScenariosIdRunPost(requestParameters: DefaultApiPublicV1ScenariosIdRunPostRequest, options?: RawAxiosRequestConfig) {
-        return DefaultApiFp(this.configuration).publicV1ScenariosIdRunPost(requestParameters.id, requestParameters.publicV1ScenariosIdRunPostRequest, requestParameters.idempotencyKey, options).then((request) => request(this.axios, this.basePath));
+    public scenariosRun(requestParameters: ScenariosApiScenariosRunRequest, options?: RawAxiosRequestConfig) {
+        return ScenariosApiFp(this.configuration).scenariosRun(requestParameters.id, requestParameters.scenariosRunRequest, requestParameters.idempotencyKey, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
-export const PublicV1ChatsGetStatusEnum = {
-    Active: 'active',
-    Paused: 'paused',
-    Completed: 'completed',
-    Operator: 'operator',
-} as const;
-export type PublicV1ChatsGetStatusEnum = typeof PublicV1ChatsGetStatusEnum[keyof typeof PublicV1ChatsGetStatusEnum];
-export const PublicV1ContactsGetChannelEnum = {
-    Telegram: 'telegram',
-    Whatsapp: 'whatsapp',
-    Vk: 'vk',
-    Widget: 'widget',
-    Email: 'email',
-    Phone: 'phone',
-} as const;
-export type PublicV1ContactsGetChannelEnum = typeof PublicV1ContactsGetChannelEnum[keyof typeof PublicV1ContactsGetChannelEnum];
-export const PublicV1ContactsGetLeadStatusEnum = {
-    New: 'new',
-    Warm: 'warm',
-    Hot: 'hot',
-    Client: 'client',
-    Lost: 'lost',
-} as const;
-export type PublicV1ContactsGetLeadStatusEnum = typeof PublicV1ContactsGetLeadStatusEnum[keyof typeof PublicV1ContactsGetLeadStatusEnum];
-export const PublicV1MessagesGetRoleEnum = {
-    User: 'user',
-    Bot: 'bot',
-    Operator: 'operator',
-    System: 'system',
-} as const;
-export type PublicV1MessagesGetRoleEnum = typeof PublicV1MessagesGetRoleEnum[keyof typeof PublicV1MessagesGetRoleEnum];
 
 
 /**
- * WebhooksApi - axios parameter creator
+ * SystemApi - axios parameter creator
  */
-export const WebhooksApiAxiosParamCreator = function (configuration?: Configuration) {
+export const SystemApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
-         * 
-         * @summary Список подписок
+         * Возвращает project_id, scopes, plan_key, остаток rate-limit
+         * @summary Контекст текущего ключа
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        publicV1WebhooksGet: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/public/v1/webhooks`;
+        meGet: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/public/v1/me`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -2011,6 +2094,123 @@ export const WebhooksApiAxiosParamCreator = function (configuration?: Configurat
                 options: localVarRequestOptions,
             };
         },
+    }
+};
+
+/**
+ * SystemApi - functional programming interface
+ */
+export const SystemApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = SystemApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * Возвращает project_id, scopes, plan_key, остаток rate-limit
+         * @summary Контекст текущего ключа
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async meGet(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<MeResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.meGet(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SystemApi.meGet']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+    }
+};
+
+/**
+ * SystemApi - factory interface
+ */
+export const SystemApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = SystemApiFp(configuration)
+    return {
+        /**
+         * Возвращает project_id, scopes, plan_key, остаток rate-limit
+         * @summary Контекст текущего ключа
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        meGet(options?: RawAxiosRequestConfig): AxiosPromise<MeResponse> {
+            return localVarFp.meGet(options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * SystemApi - interface
+ */
+export interface SystemApiInterface {
+    /**
+     * Возвращает project_id, scopes, plan_key, остаток rate-limit
+     * @summary Контекст текущего ключа
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    meGet(options?: RawAxiosRequestConfig): AxiosPromise<MeResponse>;
+
+}
+
+/**
+ * SystemApi - object-oriented interface
+ */
+export class SystemApi extends BaseAPI implements SystemApiInterface {
+    /**
+     * Возвращает project_id, scopes, plan_key, остаток rate-limit
+     * @summary Контекст текущего ключа
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public meGet(options?: RawAxiosRequestConfig) {
+        return SystemApiFp(this.configuration).meGet(options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
+
+/**
+ * WebhooksApi - axios parameter creator
+ */
+export const WebhooksApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * После создания возвращается ОДИН РАЗ поле `data.secret` — для верификации заголовка `X-Botix-Signature` (HMAC-SHA256). Сохраните его на своей стороне. 
+         * @summary Создать подписку
+         * @param {WebhooksCreateRequest} webhooksCreateRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        webhooksCreate: async (webhooksCreateRequest: WebhooksCreateRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'webhooksCreateRequest' is not null or undefined
+            assertParamExists('webhooksCreate', 'webhooksCreateRequest', webhooksCreateRequest)
+            const localVarPath = `/public/v1/webhooks`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(webhooksCreateRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
         /**
          * 
          * @summary Удалить подписку
@@ -2018,9 +2218,9 @@ export const WebhooksApiAxiosParamCreator = function (configuration?: Configurat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        publicV1WebhooksIdDelete: async (id: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        webhooksDelete: async (id: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
-            assertParamExists('publicV1WebhooksIdDelete', 'id', id)
+            assertParamExists('webhooksDelete', 'id', id)
             const localVarPath = `/public/v1/webhooks/{id}`
                 .replace('{id}', encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -2051,19 +2251,12 @@ export const WebhooksApiAxiosParamCreator = function (configuration?: Configurat
         },
         /**
          * 
-         * @summary Обновить подписку
-         * @param {number} id 
-         * @param {PublicV1WebhooksIdPutRequest} publicV1WebhooksIdPutRequest 
+         * @summary Список подписок
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        publicV1WebhooksIdPut: async (id: number, publicV1WebhooksIdPutRequest: PublicV1WebhooksIdPutRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'id' is not null or undefined
-            assertParamExists('publicV1WebhooksIdPut', 'id', id)
-            // verify required parameter 'publicV1WebhooksIdPutRequest' is not null or undefined
-            assertParamExists('publicV1WebhooksIdPut', 'publicV1WebhooksIdPutRequest', publicV1WebhooksIdPutRequest)
-            const localVarPath = `/public/v1/webhooks/{id}`
-                .replace('{id}', encodeURIComponent(String(id)));
+        webhooksList: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/public/v1/webhooks`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -2071,7 +2264,7 @@ export const WebhooksApiAxiosParamCreator = function (configuration?: Configurat
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -2079,13 +2272,11 @@ export const WebhooksApiAxiosParamCreator = function (configuration?: Configurat
             // http bearer authentication required
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
-            localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(publicV1WebhooksIdPutRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -2099,9 +2290,9 @@ export const WebhooksApiAxiosParamCreator = function (configuration?: Configurat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        publicV1WebhooksIdTestPost: async (id: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        webhooksTest: async (id: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
-            assertParamExists('publicV1WebhooksIdTestPost', 'id', id)
+            assertParamExists('webhooksTest', 'id', id)
             const localVarPath = `/public/v1/webhooks/{id}/test`
                 .replace('{id}', encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -2131,16 +2322,20 @@ export const WebhooksApiAxiosParamCreator = function (configuration?: Configurat
             };
         },
         /**
-         * После создания возвращается ОДИН РАЗ поле `data.secret` — для верификации заголовка `X-Botix-Signature` (HMAC-SHA256). Сохраните его на своей стороне. 
-         * @summary Создать подписку
-         * @param {PublicV1WebhooksPostRequest} publicV1WebhooksPostRequest 
+         * 
+         * @summary Обновить подписку
+         * @param {number} id 
+         * @param {WebhooksUpdateRequest} webhooksUpdateRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        publicV1WebhooksPost: async (publicV1WebhooksPostRequest: PublicV1WebhooksPostRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'publicV1WebhooksPostRequest' is not null or undefined
-            assertParamExists('publicV1WebhooksPost', 'publicV1WebhooksPostRequest', publicV1WebhooksPostRequest)
-            const localVarPath = `/public/v1/webhooks`;
+        webhooksUpdate: async (id: number, webhooksUpdateRequest: WebhooksUpdateRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('webhooksUpdate', 'id', id)
+            // verify required parameter 'webhooksUpdateRequest' is not null or undefined
+            assertParamExists('webhooksUpdate', 'webhooksUpdateRequest', webhooksUpdateRequest)
+            const localVarPath = `/public/v1/webhooks/{id}`
+                .replace('{id}', encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -2148,7 +2343,7 @@ export const WebhooksApiAxiosParamCreator = function (configuration?: Configurat
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -2162,7 +2357,7 @@ export const WebhooksApiAxiosParamCreator = function (configuration?: Configurat
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(publicV1WebhooksPostRequest, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(webhooksUpdateRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -2179,15 +2374,16 @@ export const WebhooksApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = WebhooksApiAxiosParamCreator(configuration)
     return {
         /**
-         * 
-         * @summary Список подписок
+         * После создания возвращается ОДИН РАЗ поле `data.secret` — для верификации заголовка `X-Botix-Signature` (HMAC-SHA256). Сохраните его на своей стороне. 
+         * @summary Создать подписку
+         * @param {WebhooksCreateRequest} webhooksCreateRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async publicV1WebhooksGet(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PublicV1WebhooksGet200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.publicV1WebhooksGet(options);
+        async webhooksCreate(webhooksCreateRequest: WebhooksCreateRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<WebhooksCreate201Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.webhooksCreate(webhooksCreateRequest, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['WebhooksApi.publicV1WebhooksGet']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['WebhooksApi.webhooksCreate']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -2197,24 +2393,22 @@ export const WebhooksApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async publicV1WebhooksIdDelete(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.publicV1WebhooksIdDelete(id, options);
+        async webhooksDelete(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.webhooksDelete(id, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['WebhooksApi.publicV1WebhooksIdDelete']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['WebhooksApi.webhooksDelete']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
-         * @summary Обновить подписку
-         * @param {number} id 
-         * @param {PublicV1WebhooksIdPutRequest} publicV1WebhooksIdPutRequest 
+         * @summary Список подписок
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async publicV1WebhooksIdPut(id: number, publicV1WebhooksIdPutRequest: PublicV1WebhooksIdPutRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.publicV1WebhooksIdPut(id, publicV1WebhooksIdPutRequest, options);
+        async webhooksList(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<WebhooksList200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.webhooksList(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['WebhooksApi.publicV1WebhooksIdPut']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['WebhooksApi.webhooksList']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -2224,23 +2418,24 @@ export const WebhooksApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async publicV1WebhooksIdTestPost(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PublicV1WebhooksIdTestPost200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.publicV1WebhooksIdTestPost(id, options);
+        async webhooksTest(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<WebhooksTest200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.webhooksTest(id, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['WebhooksApi.publicV1WebhooksIdTestPost']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['WebhooksApi.webhooksTest']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * После создания возвращается ОДИН РАЗ поле `data.secret` — для верификации заголовка `X-Botix-Signature` (HMAC-SHA256). Сохраните его на своей стороне. 
-         * @summary Создать подписку
-         * @param {PublicV1WebhooksPostRequest} publicV1WebhooksPostRequest 
+         * 
+         * @summary Обновить подписку
+         * @param {number} id 
+         * @param {WebhooksUpdateRequest} webhooksUpdateRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async publicV1WebhooksPost(publicV1WebhooksPostRequest: PublicV1WebhooksPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PublicV1WebhooksPost201Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.publicV1WebhooksPost(publicV1WebhooksPostRequest, options);
+        async webhooksUpdate(id: number, webhooksUpdateRequest: WebhooksUpdateRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.webhooksUpdate(id, webhooksUpdateRequest, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['WebhooksApi.publicV1WebhooksPost']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['WebhooksApi.webhooksUpdate']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
@@ -2253,53 +2448,53 @@ export const WebhooksApiFactory = function (configuration?: Configuration, baseP
     const localVarFp = WebhooksApiFp(configuration)
     return {
         /**
+         * После создания возвращается ОДИН РАЗ поле `data.secret` — для верификации заголовка `X-Botix-Signature` (HMAC-SHA256). Сохраните его на своей стороне. 
+         * @summary Создать подписку
+         * @param {WebhooksApiWebhooksCreateRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        webhooksCreate(requestParameters: WebhooksApiWebhooksCreateRequest, options?: RawAxiosRequestConfig): AxiosPromise<WebhooksCreate201Response> {
+            return localVarFp.webhooksCreate(requestParameters.webhooksCreateRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Удалить подписку
+         * @param {WebhooksApiWebhooksDeleteRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        webhooksDelete(requestParameters: WebhooksApiWebhooksDeleteRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.webhooksDelete(requestParameters.id, options).then((request) => request(axios, basePath));
+        },
+        /**
          * 
          * @summary Список подписок
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        publicV1WebhooksGet(options?: RawAxiosRequestConfig): AxiosPromise<PublicV1WebhooksGet200Response> {
-            return localVarFp.publicV1WebhooksGet(options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @summary Удалить подписку
-         * @param {WebhooksApiPublicV1WebhooksIdDeleteRequest} requestParameters Request parameters.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        publicV1WebhooksIdDelete(requestParameters: WebhooksApiPublicV1WebhooksIdDeleteRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
-            return localVarFp.publicV1WebhooksIdDelete(requestParameters.id, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @summary Обновить подписку
-         * @param {WebhooksApiPublicV1WebhooksIdPutRequest} requestParameters Request parameters.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        publicV1WebhooksIdPut(requestParameters: WebhooksApiPublicV1WebhooksIdPutRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
-            return localVarFp.publicV1WebhooksIdPut(requestParameters.id, requestParameters.publicV1WebhooksIdPutRequest, options).then((request) => request(axios, basePath));
+        webhooksList(options?: RawAxiosRequestConfig): AxiosPromise<WebhooksList200Response> {
+            return localVarFp.webhooksList(options).then((request) => request(axios, basePath));
         },
         /**
          * Шлёт фиктивное событие `test` на URL подписки. Удобно для проверки HMAC и доступности endpoint\'а на стороне клиента. 
          * @summary Тестовая отправка
-         * @param {WebhooksApiPublicV1WebhooksIdTestPostRequest} requestParameters Request parameters.
+         * @param {WebhooksApiWebhooksTestRequest} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        publicV1WebhooksIdTestPost(requestParameters: WebhooksApiPublicV1WebhooksIdTestPostRequest, options?: RawAxiosRequestConfig): AxiosPromise<PublicV1WebhooksIdTestPost200Response> {
-            return localVarFp.publicV1WebhooksIdTestPost(requestParameters.id, options).then((request) => request(axios, basePath));
+        webhooksTest(requestParameters: WebhooksApiWebhooksTestRequest, options?: RawAxiosRequestConfig): AxiosPromise<WebhooksTest200Response> {
+            return localVarFp.webhooksTest(requestParameters.id, options).then((request) => request(axios, basePath));
         },
         /**
-         * После создания возвращается ОДИН РАЗ поле `data.secret` — для верификации заголовка `X-Botix-Signature` (HMAC-SHA256). Сохраните его на своей стороне. 
-         * @summary Создать подписку
-         * @param {WebhooksApiPublicV1WebhooksPostRequest} requestParameters Request parameters.
+         * 
+         * @summary Обновить подписку
+         * @param {WebhooksApiWebhooksUpdateRequest} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        publicV1WebhooksPost(requestParameters: WebhooksApiPublicV1WebhooksPostRequest, options?: RawAxiosRequestConfig): AxiosPromise<PublicV1WebhooksPost201Response> {
-            return localVarFp.publicV1WebhooksPost(requestParameters.publicV1WebhooksPostRequest, options).then((request) => request(axios, basePath));
+        webhooksUpdate(requestParameters: WebhooksApiWebhooksUpdateRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.webhooksUpdate(requestParameters.id, requestParameters.webhooksUpdateRequest, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -2309,79 +2504,79 @@ export const WebhooksApiFactory = function (configuration?: Configuration, baseP
  */
 export interface WebhooksApiInterface {
     /**
+     * После создания возвращается ОДИН РАЗ поле `data.secret` — для верификации заголовка `X-Botix-Signature` (HMAC-SHA256). Сохраните его на своей стороне. 
+     * @summary Создать подписку
+     * @param {WebhooksApiWebhooksCreateRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    webhooksCreate(requestParameters: WebhooksApiWebhooksCreateRequest, options?: RawAxiosRequestConfig): AxiosPromise<WebhooksCreate201Response>;
+
+    /**
+     * 
+     * @summary Удалить подписку
+     * @param {WebhooksApiWebhooksDeleteRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    webhooksDelete(requestParameters: WebhooksApiWebhooksDeleteRequest, options?: RawAxiosRequestConfig): AxiosPromise<void>;
+
+    /**
      * 
      * @summary Список подписок
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    publicV1WebhooksGet(options?: RawAxiosRequestConfig): AxiosPromise<PublicV1WebhooksGet200Response>;
-
-    /**
-     * 
-     * @summary Удалить подписку
-     * @param {WebhooksApiPublicV1WebhooksIdDeleteRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    publicV1WebhooksIdDelete(requestParameters: WebhooksApiPublicV1WebhooksIdDeleteRequest, options?: RawAxiosRequestConfig): AxiosPromise<void>;
-
-    /**
-     * 
-     * @summary Обновить подписку
-     * @param {WebhooksApiPublicV1WebhooksIdPutRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    publicV1WebhooksIdPut(requestParameters: WebhooksApiPublicV1WebhooksIdPutRequest, options?: RawAxiosRequestConfig): AxiosPromise<void>;
+    webhooksList(options?: RawAxiosRequestConfig): AxiosPromise<WebhooksList200Response>;
 
     /**
      * Шлёт фиктивное событие `test` на URL подписки. Удобно для проверки HMAC и доступности endpoint\'а на стороне клиента. 
      * @summary Тестовая отправка
-     * @param {WebhooksApiPublicV1WebhooksIdTestPostRequest} requestParameters Request parameters.
+     * @param {WebhooksApiWebhooksTestRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    publicV1WebhooksIdTestPost(requestParameters: WebhooksApiPublicV1WebhooksIdTestPostRequest, options?: RawAxiosRequestConfig): AxiosPromise<PublicV1WebhooksIdTestPost200Response>;
+    webhooksTest(requestParameters: WebhooksApiWebhooksTestRequest, options?: RawAxiosRequestConfig): AxiosPromise<WebhooksTest200Response>;
 
     /**
-     * После создания возвращается ОДИН РАЗ поле `data.secret` — для верификации заголовка `X-Botix-Signature` (HMAC-SHA256). Сохраните его на своей стороне. 
-     * @summary Создать подписку
-     * @param {WebhooksApiPublicV1WebhooksPostRequest} requestParameters Request parameters.
+     * 
+     * @summary Обновить подписку
+     * @param {WebhooksApiWebhooksUpdateRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    publicV1WebhooksPost(requestParameters: WebhooksApiPublicV1WebhooksPostRequest, options?: RawAxiosRequestConfig): AxiosPromise<PublicV1WebhooksPost201Response>;
+    webhooksUpdate(requestParameters: WebhooksApiWebhooksUpdateRequest, options?: RawAxiosRequestConfig): AxiosPromise<void>;
 
 }
 
 /**
- * Request parameters for publicV1WebhooksIdDelete operation in WebhooksApi.
+ * Request parameters for webhooksCreate operation in WebhooksApi.
  */
-export interface WebhooksApiPublicV1WebhooksIdDeleteRequest {
+export interface WebhooksApiWebhooksCreateRequest {
+    readonly webhooksCreateRequest: WebhooksCreateRequest
+}
+
+/**
+ * Request parameters for webhooksDelete operation in WebhooksApi.
+ */
+export interface WebhooksApiWebhooksDeleteRequest {
     readonly id: number
 }
 
 /**
- * Request parameters for publicV1WebhooksIdPut operation in WebhooksApi.
+ * Request parameters for webhooksTest operation in WebhooksApi.
  */
-export interface WebhooksApiPublicV1WebhooksIdPutRequest {
-    readonly id: number
-
-    readonly publicV1WebhooksIdPutRequest: PublicV1WebhooksIdPutRequest
-}
-
-/**
- * Request parameters for publicV1WebhooksIdTestPost operation in WebhooksApi.
- */
-export interface WebhooksApiPublicV1WebhooksIdTestPostRequest {
+export interface WebhooksApiWebhooksTestRequest {
     readonly id: number
 }
 
 /**
- * Request parameters for publicV1WebhooksPost operation in WebhooksApi.
+ * Request parameters for webhooksUpdate operation in WebhooksApi.
  */
-export interface WebhooksApiPublicV1WebhooksPostRequest {
-    readonly publicV1WebhooksPostRequest: PublicV1WebhooksPostRequest
+export interface WebhooksApiWebhooksUpdateRequest {
+    readonly id: number
+
+    readonly webhooksUpdateRequest: WebhooksUpdateRequest
 }
 
 /**
@@ -2389,57 +2584,57 @@ export interface WebhooksApiPublicV1WebhooksPostRequest {
  */
 export class WebhooksApi extends BaseAPI implements WebhooksApiInterface {
     /**
-     * 
-     * @summary Список подписок
+     * После создания возвращается ОДИН РАЗ поле `data.secret` — для верификации заголовка `X-Botix-Signature` (HMAC-SHA256). Сохраните его на своей стороне. 
+     * @summary Создать подписку
+     * @param {WebhooksApiWebhooksCreateRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public publicV1WebhooksGet(options?: RawAxiosRequestConfig) {
-        return WebhooksApiFp(this.configuration).publicV1WebhooksGet(options).then((request) => request(this.axios, this.basePath));
+    public webhooksCreate(requestParameters: WebhooksApiWebhooksCreateRequest, options?: RawAxiosRequestConfig) {
+        return WebhooksApiFp(this.configuration).webhooksCreate(requestParameters.webhooksCreateRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
      * @summary Удалить подписку
-     * @param {WebhooksApiPublicV1WebhooksIdDeleteRequest} requestParameters Request parameters.
+     * @param {WebhooksApiWebhooksDeleteRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public publicV1WebhooksIdDelete(requestParameters: WebhooksApiPublicV1WebhooksIdDeleteRequest, options?: RawAxiosRequestConfig) {
-        return WebhooksApiFp(this.configuration).publicV1WebhooksIdDelete(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
+    public webhooksDelete(requestParameters: WebhooksApiWebhooksDeleteRequest, options?: RawAxiosRequestConfig) {
+        return WebhooksApiFp(this.configuration).webhooksDelete(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
-     * @summary Обновить подписку
-     * @param {WebhooksApiPublicV1WebhooksIdPutRequest} requestParameters Request parameters.
+     * @summary Список подписок
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public publicV1WebhooksIdPut(requestParameters: WebhooksApiPublicV1WebhooksIdPutRequest, options?: RawAxiosRequestConfig) {
-        return WebhooksApiFp(this.configuration).publicV1WebhooksIdPut(requestParameters.id, requestParameters.publicV1WebhooksIdPutRequest, options).then((request) => request(this.axios, this.basePath));
+    public webhooksList(options?: RawAxiosRequestConfig) {
+        return WebhooksApiFp(this.configuration).webhooksList(options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * Шлёт фиктивное событие `test` на URL подписки. Удобно для проверки HMAC и доступности endpoint\'а на стороне клиента. 
      * @summary Тестовая отправка
-     * @param {WebhooksApiPublicV1WebhooksIdTestPostRequest} requestParameters Request parameters.
+     * @param {WebhooksApiWebhooksTestRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public publicV1WebhooksIdTestPost(requestParameters: WebhooksApiPublicV1WebhooksIdTestPostRequest, options?: RawAxiosRequestConfig) {
-        return WebhooksApiFp(this.configuration).publicV1WebhooksIdTestPost(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
+    public webhooksTest(requestParameters: WebhooksApiWebhooksTestRequest, options?: RawAxiosRequestConfig) {
+        return WebhooksApiFp(this.configuration).webhooksTest(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
-     * После создания возвращается ОДИН РАЗ поле `data.secret` — для верификации заголовка `X-Botix-Signature` (HMAC-SHA256). Сохраните его на своей стороне. 
-     * @summary Создать подписку
-     * @param {WebhooksApiPublicV1WebhooksPostRequest} requestParameters Request parameters.
+     * 
+     * @summary Обновить подписку
+     * @param {WebhooksApiWebhooksUpdateRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public publicV1WebhooksPost(requestParameters: WebhooksApiPublicV1WebhooksPostRequest, options?: RawAxiosRequestConfig) {
-        return WebhooksApiFp(this.configuration).publicV1WebhooksPost(requestParameters.publicV1WebhooksPostRequest, options).then((request) => request(this.axios, this.basePath));
+    public webhooksUpdate(requestParameters: WebhooksApiWebhooksUpdateRequest, options?: RawAxiosRequestConfig) {
+        return WebhooksApiFp(this.configuration).webhooksUpdate(requestParameters.id, requestParameters.webhooksUpdateRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
